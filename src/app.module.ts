@@ -5,17 +5,15 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { getConnectionOptions } from 'typeorm';
 import { CompaniesModule } from './modules/companies/companies.module'
-import { CompaniesEntity } from './modules/companies/companies.entity';
 
 const NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
 
 @Module({
   imports: [
-    // ServeStaticModule.forRoot({
-    //   rootPath: join(__dirname, '..', 'frontend'),
-    // }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'frontend'),
+    }),
     ConfigModule.forRoot({
       envFilePath: [
         `./envs/.${NODE_ENV}.env`,
