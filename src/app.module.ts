@@ -6,8 +6,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CompaniesModule } from './modules/companies/companies.module'
+import { ProductCategoriesModule } from './modules/product_categories/product.categories.module';
 
-const NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
+process.env.NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ const NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
     }),
     ConfigModule.forRoot({
       envFilePath: [
-        `./envs/.${NODE_ENV}.env`,
+        `./envs/.${process.env.NODE_ENV}.env`,
         './envs/.env'
       ],
       isGlobal: true,
@@ -30,10 +31,11 @@ const NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
         password: process.env.DATABASE_PASSWORD,
         database: process.env.DATABASE_NAME,
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: NODE_ENV == "development" ? true : false,
+        synchronize: process.env.NODE_ENV == "development" ? true : false,
       })
     }),
-    CompaniesModule
+    CompaniesModule,
+    ProductCategoriesModule
   ],
   controllers: [AppController],
   providers: [AppService],

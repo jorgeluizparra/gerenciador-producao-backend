@@ -17,7 +17,10 @@ export class TemplatesService {
   async create (body: CreateTemplateDto): Promise<TemplatesEntity> {
     let template = this.templatesRepository.create(body)
     return this.templatesRepository.save(template).catch((error) => {
-      this.logger.error(error)
+      this.logger.error({
+        location: '[Templates > create]',
+        error
+      })
       throw new HttpException(
         { message: "Erro interno do servidor" },
         HttpStatus.INTERNAL_SERVER_ERROR
@@ -27,7 +30,10 @@ export class TemplatesService {
 
   findAll(): Promise<TemplatesEntity[]> {
     return this.templatesRepository.find().catch((error) => {
-      this.logger.error(error)
+      this.logger.error({
+        location: '[Templates > findAll]',
+        error
+      })
       throw new HttpException(
         { message: "Aconteceu algum erro ao tentar consultar o banco de dados" },
         HttpStatus.INTERNAL_SERVER_ERROR

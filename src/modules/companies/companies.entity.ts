@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { ProductCategoriesEntity } from '../product_categories/product.categories.entity';
 
 @Entity('companies')
 export class CompaniesEntity {
@@ -34,4 +35,7 @@ export class CompaniesEntity {
   @ApiProperty()
   @Column({ default: false })
   isActive: boolean;
+
+  @OneToMany(() => ProductCategoriesEntity, productCategory => productCategory.company)
+  productCategories: ProductCategoriesEntity[];
 }

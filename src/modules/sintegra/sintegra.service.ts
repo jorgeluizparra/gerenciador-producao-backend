@@ -11,24 +11,28 @@ export class SintegraService {
   ) {}
   
   private async getDataFromSintegraApi(params: ParamsDto): Promise<any> {
-    let { data } = await this.httpService.get(
-      process.env.API_SINTEGRA,
-      {
-        params: {
-          token: process.env.SINTEGRA_TOKEN,
-          ...params
+    try {
+      let { data } = await this.httpService.get(
+        process.env.API_SINTEGRA,
+        {
+          params: {
+            token: process.env.SINTEGRA_TOKEN,
+            ...params
+          }
         }
-      }
-    )
-    .toPromise()
-    .catch((error) => {
-      this.logger.error(error)
+      )
+      .toPromise()
+      return data;
+    } catch (error) {
+      this.logger.error({
+        location: '[Sintegra > getDataFromSintegraApi]',
+        error
+      })
       throw new HttpException(
         { message: "Ocoreu um erro ao tentar consultar os dados na Receita Federal" },
         HttpStatus.INTERNAL_SERVER_ERROR
       )
-    });
-    return data;
+    }
   }
 
   async findOneCnpj(cnpj: string): Promise<any> {

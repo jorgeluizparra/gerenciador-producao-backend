@@ -12,5 +12,6 @@ import { CompaniesService } from './companies.service';
   ],
   controllers: [CompaniesController],
   providers: [CompaniesService],
+  exports: [CompaniesService]
 })
 export class CompaniesModule {}

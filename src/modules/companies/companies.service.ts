@@ -47,7 +47,10 @@ export class CompaniesService {
       city: data.municipio,
     })
     return this.companiesRepository.save(company).catch((error) => {
-      this.logger.error(error)
+      this.logger.error({
+        location: '[Companies > create]',
+        error
+      })
       throw new HttpException(
         { message: "Erro interno do servidor" },
         HttpStatus.INTERNAL_SERVER_ERROR
@@ -57,7 +60,10 @@ export class CompaniesService {
 
   findAll(): Promise<CompaniesEntity[]> {
     return this.companiesRepository.find().catch((error) => {
-      this.logger.error(error)
+      this.logger.error({
+        location: '[Companies > findAll]',
+        error
+      })
       throw new HttpException(
         { message: "Aconteceu algum erro ao tentar consultar o banco de dados" },
         HttpStatus.INTERNAL_SERVER_ERROR
@@ -67,10 +73,10 @@ export class CompaniesService {
 
   findOne(id: number): Promise<CompaniesEntity> {
     try {
-      return this.companiesRepository.findOne(id);
+      return this.companiesRepository.findOne(id, { relations: ['productCategories'] });
     } catch (error) {
       throw new HttpException(
-        { message: "Id não encontrado" },
+        { message: "Id da empresa não encontrado" },
         HttpStatus.NOT_FOUND
       )
     }

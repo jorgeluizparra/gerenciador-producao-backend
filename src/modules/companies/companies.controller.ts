@@ -5,7 +5,7 @@ import { CreateCompanyDto, UpdateCompanyDto } from './companies.dto';
 import { CompaniesEntity } from './companies.entity';
 import { CompaniesService } from './companies.service';
 
-@ApiTags('companies')
+@ApiTags('Companies')
 @Controller('companies')
 export class CompaniesController {
   constructor(private readonly companiesService: CompaniesService) {}
