@@ -1,19 +1,19 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ErrorMessageDto } from 'src/modules/common.dto';
-import { CreateTemplateDto, UpdateTemplateDto } from './templates.dto';
-import { TemplatesEntity } from './templates.entity';
-import { TemplatesService } from './templates.service';
+import { CreateProductDto, UpdateProductDto } from './products.dto';
+import { ProductsEntity } from './products.entity';
+import { ProductsService } from './products.service';
 
-@ApiTags('Templates')
-@Controller('templates')
-export class TemplatesController {
-  constructor(private readonly templatesService: TemplatesService) {}
+@ApiTags('Products')
+@Controller('products')
+export class ProductsController {
+  constructor(private readonly productsService: ProductsService) {}
 
   @Post()
   @ApiCreatedResponse({
       description: '',
-      type: TemplatesEntity
+      type: ProductsEntity
   })
   @ApiBadRequestResponse({
     description: '',
@@ -23,27 +23,27 @@ export class TemplatesController {
     description: '',
     type: ErrorMessageDto
   })
-  async create(@Body() body: CreateTemplateDto): Promise<TemplatesEntity> {
-    return this.templatesService.create(body)
+  async create(@Body() body: CreateProductDto): Promise<ProductsEntity> {
+    return this.productsService.create(body)
   }
 
   @Get()
   @ApiOkResponse({
       description: '',
-      type: [TemplatesEntity]
+      type: [ProductsEntity]
   })
   @ApiInternalServerErrorResponse({
     description: '',
     type: ErrorMessageDto
   })
-  async findAll(): Promise<TemplatesEntity[]> {
-    return this.templatesService.findAll()
+  async findAll(): Promise<ProductsEntity[]> {
+    return this.productsService.findAll()
   }
 
   @Get(':id')
   @ApiOkResponse({
     description: '',
-    type: TemplatesEntity
+    type: ProductsEntity
   })
   @ApiNotFoundResponse({
     description: '',
@@ -53,14 +53,14 @@ export class TemplatesController {
     description: '',
     type: ErrorMessageDto
   })
-  async findOne(@Param('id') id: number): Promise<TemplatesEntity> {
-    return this.templatesService.findOne(id)
+  async findOne(@Param('id') id: number): Promise<ProductsEntity> {
+    return this.productsService.findOne(id)
   }
 
   @Put(':id')
   @ApiOkResponse({
     description: '',
-    type: TemplatesEntity
+    type: ProductsEntity
   })
   @ApiNotFoundResponse({
     description: '',
@@ -70,13 +70,13 @@ export class TemplatesController {
     description: '',
     type: ErrorMessageDto
   })
-  async updateOne(@Param('id') id: number, @Body() body: UpdateTemplateDto): Promise<TemplatesEntity> {
-    return this.templatesService.updateOne(id, body)
+  async updateOne(@Param('id') id: number, @Body() body: UpdateProductDto): Promise<ProductsEntity> {
+    return this.productsService.updateOne(id, body)
   }
 
   @ApiOkResponse({
     description: '',
-    type: TemplatesEntity
+    type: ProductsEntity
   })
   @ApiInternalServerErrorResponse({
     description: '',
@@ -84,6 +84,6 @@ export class TemplatesController {
   })
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<void> {
-    return this.templatesService.remove(id)
+    return this.productsService.remove(id)
   }
 }
