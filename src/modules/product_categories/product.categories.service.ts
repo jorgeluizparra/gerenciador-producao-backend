@@ -31,8 +31,10 @@ export class ProductCategoriesService {
     });
   }
 
-  findAll(): Promise<ProductCategoriesEntity[]> {
-    return this.productCategoriesRepository.find().catch((error) => {
+  findAll(companyId): Promise<ProductCategoriesEntity[]> {
+    let query
+    if (companyId) query = { where: { company: parseInt(companyId) }};
+    return this.productCategoriesRepository.find(query).catch((error) => {
       this.logger.error({
         location: '[Product Categories > findAll]',
         error

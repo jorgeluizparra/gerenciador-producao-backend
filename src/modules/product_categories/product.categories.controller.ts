@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
+import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { query } from 'express';
 import { ErrorMessageDto } from 'src/modules/common.dto';
 import { CreateProductCategorieDto } from './product.categories.dto';
 import { ProductCategoriesEntity } from './product.categories.entity';
@@ -36,8 +37,9 @@ export class ProductCategoriesController {
     description: '',
     type: ErrorMessageDto
   })
-  async findAll(): Promise<ProductCategoriesEntity[]> {
-    return this.productCategoriesService.findAll()
+  @ApiQuery({ name: 'companyId', required: false })
+  async findAll(@Query('companyId') companyId: number): Promise<ProductCategoriesEntity[]> {
+    return this.productCategoriesService.findAll(companyId)
   }
 
   @Get(':id')
