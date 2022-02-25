@@ -37,9 +37,11 @@ export class ProductCategoriesController {
     description: '',
     type: ErrorMessageDto
   })
-  @ApiQuery({ name: 'companyId', required: false })
-  async findAll(@Query('companyId') companyId: number): Promise<ProductCategoriesEntity[]> {
-    return this.productCategoriesService.findAll(companyId)
+  @ApiQuery({ name: 'company', required: false })
+  async findAll(@Query() query: object): Promise<ProductCategoriesEntity[]> {
+    console.log(query);
+    
+    return this.productCategoriesService.findAll(query)
   }
 
   @Get(':id')

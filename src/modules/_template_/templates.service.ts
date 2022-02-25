@@ -28,8 +28,8 @@ export class TemplatesService {
     });
   }
 
-  findAll(): Promise<TemplatesEntity[]> {
-    return this.templatesRepository.find().catch((error) => {
+  findAll(query): Promise<TemplatesEntity[]> {
+    return this.templatesRepository.find({ where: query}).catch((error) => {
       this.logger.error({
         location: '[Templates > findAll]',
         error
@@ -41,15 +41,28 @@ export class TemplatesService {
     });
   }
 
-  findOne(id: number): Promise<TemplatesEntity> {
+  async findOne(id: number): Promise<TemplatesEntity> {
+    let template;
     try {
-      return this.templatesRepository.findOne(id);
+      template = await this.templatesRepository.findOne(id, { relations: ['productCategories'] });
     } catch (error) {
+      this.logger.error({
+        location: '[Templates > findOne]',
+        error
+      })
       throw new HttpException(
-        { message: "Id não encontrado" },
+        { message: "" },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      )
+    }
+    if (!template) {
+      this.logger.warn("")
+      throw new HttpException(
+        { message: "" },
         HttpStatus.NOT_FOUND
       )
     }
+    return template;
   }
 
   async updateOne(id: number, body: UpdateTemplateDto): Promise<TemplatesEntity> {

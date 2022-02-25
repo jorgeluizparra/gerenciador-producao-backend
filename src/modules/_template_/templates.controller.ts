@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ErrorMessageDto } from 'src/modules/common.dto';
 import { CreateTemplateDto, UpdateTemplateDto } from './templates.dto';
@@ -36,8 +36,8 @@ export class TemplatesController {
     description: '',
     type: ErrorMessageDto
   })
-  async findAll(): Promise<TemplatesEntity[]> {
-    return this.templatesService.findAll()
+  async findAll(@Query() query: object): Promise<TemplatesEntity[]> {
+    return this.templatesService.findAll(query)
   }
 
   @Get(':id')

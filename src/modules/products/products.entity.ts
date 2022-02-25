@@ -21,9 +21,12 @@ export class ProductsEntity {
   price: number;
 
   @ApiProperty()
-  @Column()
+  @Column({ default: true })
   isActive: boolean;
 
   @ManyToOne(() => ProductCategoriesEntity, productCategory => productCategory.products)
   productCategory: ProductCategoriesEntity;
+  @Column()
+  productCategoryId: number;
+
 }

@@ -1,27 +1,29 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsBoolean, IsNotEmpty, IsString, Length } from "class-validator";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, Length } from "class-validator";
 
-export class CreateProductDto {
-    
+export class CreateAndUpdateProductDto {
     @IsString()
     @IsNotEmpty()
     @ApiProperty()
     name: string;
 
-    @Length(14)
     @IsString()
     @IsNotEmpty()
     @ApiProperty()
-    cnpj: string;
-}
+    description: string;
 
-export class UpdateProductDto {
-    
-    @IsString()
+    @IsNumber()
+    @IsNotEmpty()
     @ApiProperty()
-    name: string;
+    price: number;
 
+    @IsOptional()
     @IsBoolean()
-    @ApiProperty()
+    @ApiPropertyOptional()
     isActive: boolean;
+
+    @IsNumber()
+    @IsNotEmpty()
+    @ApiProperty()
+    productCategoryId: number;
 }

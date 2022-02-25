@@ -1,8 +1,9 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ProductCategoriesService } from '../product_categories/product.categories.service';
 import { SintegraService } from '../sintegra/sintegra.service';
-import { CreateProductDto, UpdateProductDto } from './products.dto';
+import { CreateAndUpdateProductDto } from './products.dto';
 import { ProductsEntity } from './products.entity';
 
 @Injectable()
@@ -12,11 +13,14 @@ export class ProductsService {
   constructor(
     @InjectRepository(ProductsEntity)
     private productsRepository: Repository<ProductsEntity>,
+    private productsCategorie: ProductCategoriesService
   ) {}
 
-  async create (body: CreateProductDto): Promise<ProductsEntity> {
-    let template = this.productsRepository.create(body)
-    return this.productsRepository.save(template).catch((error) => {
+  async create (body: CreateAndUpdateProductDto): Promise<ProductsEntity> {
+    let product = this.productsRepository.create(body)
+    let productCategory = await this.productsCategorie.findOne(body.productCategoryId);
+    product.productCategory = productCategory
+    return this.productsRepository.save(product).catch((error) => {
       this.logger.error({
         location: '[Products > create]',
         error
@@ -28,8 +32,8 @@ export class ProductsService {
     });
   }
 
-  findAll(): Promise<ProductsEntity[]> {
-    return this.productsRepository.find().catch((error) => {
+  findAll(query): Promise<ProductsEntity[]> {
+    return this.productsRepository.find({ where: query }).catch((error) => {
       this.logger.error({
         location: '[Products > findAll]',
         error
@@ -52,8 +56,10 @@ export class ProductsService {
     }
   }
 
-  async updateOne(id: number, body: UpdateProductDto): Promise<ProductsEntity> {
-    await this.findOne(id);
+  async updateOne(id: number, body: CreateAndUpdateProductDto): Promise<ProductsEntity> {
+    let product = await this.findOne(id);
+    let productCategory = await this.productsCategorie.findOne(body.productCategoryId);
+    product.productCategory = productCategory;
     await this.productsRepository.update({ id }, body);
     return this.findOne(id);
   }

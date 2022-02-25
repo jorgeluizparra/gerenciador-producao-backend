@@ -14,7 +14,7 @@ export class ProductCategoriesEntity {
   name: string;
 
   @ApiProperty()
-  @Column()
+  @Column({ default: true })
   isActive: boolean;
 
   @ManyToOne(() => CompaniesEntity, company => company.productCategories)

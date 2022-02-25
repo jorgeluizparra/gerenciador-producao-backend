@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CompaniesModule } from './modules/companies/companies.module'
 import { ProductCategoriesModule } from './modules/product_categories/product.categories.module';
+import { ProductsModule } from './modules/products/products.module';
 
 process.env.NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
 
@@ -35,7 +36,8 @@ process.env.NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV : 'developmen
       })
     }),
     CompaniesModule,
-    ProductCategoriesModule
+    ProductCategoriesModule,
+    ProductsModule
   ],
   controllers: [AppController],
   providers: [AppService],

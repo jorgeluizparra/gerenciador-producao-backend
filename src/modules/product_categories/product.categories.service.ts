@@ -31,10 +31,8 @@ export class ProductCategoriesService {
     });
   }
 
-  findAll(companyId): Promise<ProductCategoriesEntity[]> {
-    let query
-    if (companyId) query = { where: { company: parseInt(companyId) }};
-    return this.productCategoriesRepository.find(query).catch((error) => {
+  findAll(query): Promise<ProductCategoriesEntity[]> {
+    return this.productCategoriesRepository.find({ where: query}).catch((error) => {
       this.logger.error({
         location: '[Product Categories > findAll]',
         error
@@ -46,15 +44,28 @@ export class ProductCategoriesService {
     });
   }
 
-  findOne(id: number): Promise<ProductCategoriesEntity> {
+  async findOne(id: number): Promise<ProductCategoriesEntity> {
+    let productCategory;
     try {
-      return this.productCategoriesRepository.findOne(id);
+      productCategory = await this.productCategoriesRepository.findOne(id, { relations: ['products'] });
     } catch (error) {
+      this.logger.error({
+        location: '[Product Categories > findOne]',
+        error
+      })
       throw new HttpException(
-        { message: "Id não encontrado" },
+        { message: "Erro ao tentar consultar o banco de dados." },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      )
+    }
+    if (!productCategory) {
+      this.logger.warn("Product category id not found")
+      throw new HttpException(
+        { message: "Categoria não encontrada" },
         HttpStatus.NOT_FOUND
       )
     }
+    return productCategory;
   }
 
   async remove(id: string): Promise<void> {
