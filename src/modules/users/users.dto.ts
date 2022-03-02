@@ -20,4 +20,4 @@ export class CreateUserDto {
 
 export class UpdateUserDto extends PartialType(
     OmitType(CreateUserDto, ['email'] as const),
-  ) {}
+) {}

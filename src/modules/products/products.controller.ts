@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ErrorMessageDto } from 'src/modules/common.dto';
-import { CreateAndUpdateProductDto } from './products.dto';
+import { CreateProductDto, UpdateProductDto } from './products.dto';
 import { ProductsEntity } from './products.entity';
 import { ProductsService } from './products.service';
 
@@ -12,7 +12,7 @@ export class ProductsController {
 
   @Post()
   @ApiCreatedResponse({
-      description: '',
+      description: 'Product created successfully',
       type: ProductsEntity
   })
   @ApiBadRequestResponse({
@@ -23,7 +23,7 @@ export class ProductsController {
     description: '',
     type: ErrorMessageDto
   })
-  async create(@Body() body: CreateAndUpdateProductDto): Promise<ProductsEntity> {
+  async create(@Body() body: CreateProductDto): Promise<ProductsEntity> {
     return this.productsService.create(body)
   }
 
@@ -70,7 +70,7 @@ export class ProductsController {
     description: '',
     type: ErrorMessageDto
   })
-  async updateOne(@Param('id') id: number, @Body() body: CreateAndUpdateProductDto): Promise<ProductsEntity> {
+  async updateOne(@Param('id') id: number, @Body() body: UpdateProductDto): Promise<ProductsEntity> {
     return this.productsService.updateOne(id, body)
   }
 

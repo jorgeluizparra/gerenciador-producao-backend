@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CompaniesService } from '../companies/companies.service';
-import { CreateProductCategorieDto } from './product.categories.dto';
+import { CreateProductCategoryDto } from './product.categories.dto';
 import { ProductCategoriesEntity } from './product.categories.entity';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class ProductCategoriesService {
     private companiesService: CompaniesService,
   ) {}
 
-  async create (body: CreateProductCategorieDto): Promise<ProductCategoriesEntity> {
+  async create (body: CreateProductCategoryDto): Promise<ProductCategoriesEntity> {
     let productCategorie = this.productCategoriesRepository.create(body);
     let company = await this.companiesService.findOne(body.companyId);
     productCategorie.company = company

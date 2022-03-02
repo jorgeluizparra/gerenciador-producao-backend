@@ -1,7 +1,7 @@
-import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional, OmitType, PartialType } from "@nestjs/swagger";
 import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, Length } from "class-validator";
 
-export class CreateAndUpdateProductDto {
+export class CreateProductDto {
     @IsString()
     @IsNotEmpty()
     @ApiProperty()
@@ -27,3 +27,7 @@ export class CreateAndUpdateProductDto {
     @ApiProperty()
     productCategoryId: number;
 }
+
+export class UpdateProductDto extends PartialType(
+    OmitType(CreateProductDto, [] as const),
+) {}

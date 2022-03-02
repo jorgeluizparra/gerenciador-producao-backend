@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProductCategoriesService } from '../product_categories/product.categories.service';
 import { SintegraService } from '../sintegra/sintegra.service';
-import { CreateAndUpdateProductDto } from './products.dto';
+import { CreateProductDto, UpdateProductDto } from './products.dto';
 import { ProductsEntity } from './products.entity';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class ProductsService {
     private productsCategorie: ProductCategoriesService
   ) {}
 
-  async create (body: CreateAndUpdateProductDto): Promise<ProductsEntity> {
+  async create (body: CreateProductDto): Promise<ProductsEntity> {
     let product = this.productsRepository.create(body)
     let productCategory = await this.productsCategorie.findOne(body.productCategoryId);
     product.productCategory = productCategory
@@ -56,7 +56,7 @@ export class ProductsService {
     }
   }
 
-  async updateOne(id: number, body: CreateAndUpdateProductDto): Promise<ProductsEntity> {
+  async updateOne(id: number, body: UpdateProductDto): Promise<ProductsEntity> {
     let product = await this.findOne(id);
     let productCategory = await this.productsCategorie.findOne(body.productCategoryId);
     product.productCategory = productCategory;

@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, 
 import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { query } from 'express';
 import { ErrorMessageDto } from 'src/modules/common.dto';
-import { CreateProductCategorieDto } from './product.categories.dto';
+import { CreateProductCategoryDto } from './product.categories.dto';
 import { ProductCategoriesEntity } from './product.categories.entity';
 import { ProductCategoriesService } from './product.categories.service';
 
@@ -24,7 +24,7 @@ export class ProductCategoriesController {
     description: '',
     type: ErrorMessageDto
   })
-  async create(@Body() body: CreateProductCategorieDto): Promise<ProductCategoriesEntity> {
+  async create(@Body() body: CreateProductCategoryDto): Promise<ProductCategoriesEntity> {
     return this.productCategoriesService.create(body)
   }
 

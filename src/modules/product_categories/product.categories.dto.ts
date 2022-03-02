@@ -1,7 +1,7 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, OmitType, PartialType } from "@nestjs/swagger";
 import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
-export class CreateProductCategorieDto {
+export class CreateProductCategoryDto {
     
     @IsString()
     @IsNotEmpty()
@@ -13,3 +13,7 @@ export class CreateProductCategorieDto {
     @ApiProperty()
     companyId: number;
 }
+
+export class UpdateProductCategoryDto extends PartialType(
+    OmitType(CreateProductCategoryDto, [] as const),
+) {}

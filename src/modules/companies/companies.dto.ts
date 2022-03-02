@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional, OmitType, PartialType } from "@nestjs/swagger";
 import { IsBoolean, IsNotEmpty, IsOptional, IsString, Length } from "class-validator";
 
 export class CreateCompanyDto {
@@ -13,16 +13,13 @@ export class CreateCompanyDto {
     @IsNotEmpty()
     @ApiProperty()
     cnpj: string;
-}
-
-export class UpdateCompanyDto {
-    @IsOptional()
-    @IsString()
-    @ApiPropertyOptional()
-    name: string;
 
     @IsOptional()
     @IsBoolean()
     @ApiPropertyOptional()
     isActive: boolean;
 }
+
+export class UpdateCompanyDto extends PartialType(
+    OmitType(CreateCompanyDto, [] as const),
+) {}

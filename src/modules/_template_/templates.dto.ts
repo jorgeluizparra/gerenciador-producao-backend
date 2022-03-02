@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional, OmitType, PartialType } from "@nestjs/swagger";
 import { IsBoolean, IsNotEmpty, IsOptional, IsString, Length } from "class-validator";
 
 export class CreateTemplateDto {
@@ -15,14 +15,6 @@ export class CreateTemplateDto {
     cnpj: string;
 }
 
-export class UpdateTemplateDto {
-    @IsOptional()
-    @IsString()
-    @ApiPropertyOptional()
-    name: string;
-
-    @IsOptional()
-    @IsBoolean()
-    @ApiPropertyOptional()
-    isActive: boolean;
-}
+export class UpdateTemplateDto extends PartialType(
+    OmitType(CreateTemplateDto, [] as const),
+) {}
