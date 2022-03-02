@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional, OmitType, PartialType } from "@nestjs/swagger";
 import { IsBoolean, IsNotEmpty, IsOptional, IsString, Length } from "class-validator";
 
-export class CreateUserDto {
+export class CreateClientDto {
     @IsString()
     @IsNotEmpty()
     @ApiProperty()
@@ -12,17 +12,17 @@ export class CreateUserDto {
     @ApiProperty()
     password: string;
 
-    @IsOptional()
-    @IsBoolean()
-    @ApiPropertyOptional()
-    isActive: boolean;
-
     @IsString()
     @IsNotEmpty()
     @ApiProperty()
     accessType: string;
+
+    @IsOptional()
+    @IsBoolean()
+    @ApiPropertyOptional()
+    isActive: boolean;
 }
 
-export class UpdateUserDto extends PartialType(
-    OmitType(CreateUserDto, ['email'] as const),
+export class UpdateClientDto extends PartialType(
+    OmitType(CreateClientDto, ['email'] as const),
 ) {}

@@ -9,6 +9,8 @@ import { CompaniesModule } from './modules/companies/companies.module'
 import { ProductCategoriesModule } from './modules/product_categories/product.categories.module';
 import { ProductsModule } from './modules/products/products.module';
 import { UsersModule } from './modules/users/users.module';
+import { ClientsModule } from './modules/clients/clients.module';
+import { CreditCardsModule } from './modules/credit_cards/credit.cards.module';
 
 process.env.NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
 
@@ -39,7 +41,9 @@ process.env.NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV : 'developmen
     CompaniesModule,
     ProductCategoriesModule,
     ProductsModule,
-    UsersModule
+    UsersModule,
+    ClientsModule,
+    CreditCardsModule
   ],
   controllers: [AppController],
   providers: [AppService],

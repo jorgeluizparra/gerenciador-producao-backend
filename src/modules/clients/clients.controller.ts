@@ -1,19 +1,19 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ErrorMessageDto } from 'src/modules/common.dto';
-import { CreateUserDto, UpdateUserDto } from './users.dto';
-import { UsersEntity } from './users.entity';
-import { UsersService } from './users.service';
+import { CreateClientDto, UpdateClientDto } from './clients.dto';
+import { ClientsEntity } from './clients.entity';
+import { ClientsService } from './clients.service';
 
-@ApiTags('Users')
-@Controller('users')
-export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+@ApiTags('Clients')
+@Controller('clients')
+export class ClientsController {
+  constructor(private readonly clientsService: ClientsService) {}
 
   @Post()
   @ApiCreatedResponse({
       description: '',
-      type: UsersEntity
+      type: ClientsEntity
   })
   @ApiBadRequestResponse({
     description: '',
@@ -23,27 +23,27 @@ export class UsersController {
     description: '',
     type: ErrorMessageDto
   })
-  async create(@Body() body: CreateUserDto): Promise<UsersEntity> {
-    return this.usersService.create(body)
+  async create(@Body() body: CreateClientDto): Promise<ClientsEntity> {
+    return this.clientsService.create(body)
   }
 
   @Get()
   @ApiOkResponse({
       description: '',
-      type: [UsersEntity]
+      type: [ClientsEntity]
   })
   @ApiInternalServerErrorResponse({
     description: '',
     type: ErrorMessageDto
   })
-  async findAll(@Query() query: object): Promise<UsersEntity[]> {
-    return this.usersService.findAll(query)
+  async findAll(@Query() query: object): Promise<ClientsEntity[]> {
+    return this.clientsService.findAll(query)
   }
 
   @Get(':id')
   @ApiOkResponse({
     description: '',
-    type: UsersEntity
+    type: ClientsEntity
   })
   @ApiNotFoundResponse({
     description: '',
@@ -53,14 +53,14 @@ export class UsersController {
     description: '',
     type: ErrorMessageDto
   })
-  async findOne(@Param('id') id: number): Promise<UsersEntity> {
-    return this.usersService.findOne(id)
+  async findOne(@Param('id') id: number): Promise<ClientsEntity> {
+    return this.clientsService.findOne(id)
   }
 
   @Put(':id')
   @ApiOkResponse({
     description: '',
-    type: UsersEntity
+    type: ClientsEntity
   })
   @ApiNotFoundResponse({
     description: '',
@@ -70,13 +70,13 @@ export class UsersController {
     description: '',
     type: ErrorMessageDto
   })
-  async updateOne(@Param('id') id: number, @Body() body: UpdateUserDto): Promise<UsersEntity> {
-    return this.usersService.updateOne(id, body)
+  async updateOne(@Param('id') id: number, @Body() body: UpdateClientDto): Promise<ClientsEntity> {
+    return this.clientsService.updateOne(id, body)
   }
 
   // @ApiOkResponse({
   //   description: '',
-  //   type: UsersEntity
+  //   type: ClientsEntity
   // })
   // @ApiInternalServerErrorResponse({
   //   description: '',
@@ -84,6 +84,6 @@ export class UsersController {
   // })
   // @Delete(':id')
   // async remove(@Param('id') id: string): Promise<void> {
-  //   return this.usersService.remove(id)
+  //   return this.clientsService.remove(id)
   // }
 }

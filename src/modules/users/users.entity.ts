@@ -20,6 +20,10 @@ export class UsersEntity {
   @Column()
   accessType: string;
 
+  @ApiProperty()
+  @Column({ default: false })
+  isActive: boolean;
+
   @ManyToOne(() => CompaniesEntity, company => company.users)
   company: CompaniesEntity;
   @Column()
