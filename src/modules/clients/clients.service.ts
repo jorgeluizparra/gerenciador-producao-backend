@@ -14,6 +14,13 @@ export class ClientsService {
   ) {}
 
   async create (body: CreateClientDto): Promise<ClientsEntity> {
+    if (!Number.isInteger(parseInt(body.cpf)) || body.cpf.length != 11) {
+      this.logger.warn("Invalid CPF. It must contain 11 numbers.")
+      throw new HttpException(
+        { message: "CPF inválido. CPF deve conter 11 numeros." },
+        HttpStatus.BAD_REQUEST
+      )
+    }
     let clients = await this.findAll([
       { email: body.email },
       { cpf: body.cpf }
@@ -41,7 +48,7 @@ export class ClientsService {
     });
   }
 
-  findAll(query): Promise<ClientsEntity[]> {
+  findAll(query: object): Promise<ClientsEntity[]> {
     return this.clientsRepository.find({ where: query}).catch((error) => {
       this.logger.error({
         location: '[Clients > findAll]',

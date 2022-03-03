@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ErrorMessageDto } from 'src/modules/common.dto';
 import { CreateCompanyDto, UpdateCompanyDto } from './companies.dto';
@@ -16,11 +16,7 @@ export class CompaniesController {
       type: CompaniesEntity
   })
   @ApiBadRequestResponse({
-    description: 'Invalid CNPJ length.',
-    type: ErrorMessageDto
-  })
-  @ApiConflictResponse({
-    description: 'CNPJ already signed up.',
+    description: 'Invalid CNPJ length or CNPJ already signed up.',
     type: ErrorMessageDto
   })
   async create(@Body() body: CreateCompanyDto): Promise<CompaniesEntity> {
@@ -29,15 +25,15 @@ export class CompaniesController {
 
   @Get()
   @ApiOkResponse({
-      description: 'Return a array of companies.',
+      description: 'Return a array of companies that match with the query',
       type: [CompaniesEntity]
   })
   @ApiInternalServerErrorResponse({
-    description: 'Something went wrong in this operation.',
+    description: 'Error consulting the database',
     type: ErrorMessageDto
   })
-  async findAll(): Promise<CompaniesEntity[]> {
-    return this.companiesService.findAll()
+  async findAll(@Query() query: object): Promise<CompaniesEntity[]> {
+    return this.companiesService.findAll(query)
   }
 
   @Get(':id')
@@ -50,7 +46,7 @@ export class CompaniesController {
     type: ErrorMessageDto
   })
   @ApiInternalServerErrorResponse({
-    description: 'Something went wrong in this operation.',
+    description: 'Error consulting the database',
     type: ErrorMessageDto
   })
   async findOne(@Param('id') id: number): Promise<CompaniesEntity> {
@@ -67,7 +63,7 @@ export class CompaniesController {
     type: ErrorMessageDto
   })
   @ApiInternalServerErrorResponse({
-    description: 'Something went wrong in this operation.',
+    description: 'Error consulting the database',
     type: ErrorMessageDto
   })
   async updateOne(@Param('id') id: number, @Body() body: UpdateCompanyDto): Promise<CompaniesEntity> {

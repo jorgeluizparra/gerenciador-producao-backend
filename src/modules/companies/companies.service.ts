@@ -20,14 +20,6 @@ export class CompaniesService {
     return this.sintegraService.findOneCnpj(CNPJ)
   }
 
-  private async findByCnpj (cnpj: string): Promise<CompaniesEntity[]> {
-    return this.companiesRepository.find({
-      where: {
-        cnpj
-      }
-    })
-  }
-
   async create (body: CreateCompanyDto): Promise<CompaniesEntity> {
     if (!Number.isInteger(parseInt(body.cnpj)) || body.cnpj.length != 14) {
       this.logger.warn("Invalid CNPJ. It must contain 14 numbers.")
@@ -36,12 +28,12 @@ export class CompaniesService {
         HttpStatus.BAD_REQUEST
       )
     }
-    let companies = await this.findByCnpj(body.cnpj)
+    let companies = await this.findAll({ cnpj: body.cnpj })
     if (companies.length > 0) {
       this.logger.warn("CNPJ already signed up")
       throw new HttpException(
         { message: "CNPJ já cadastrado" },
-        HttpStatus.CONFLICT
+        HttpStatus.BAD_REQUEST
       )
     }
     let data = await this.getCompanyData(body.cnpj);
@@ -59,43 +51,42 @@ export class CompaniesService {
         error
       })
       throw new HttpException(
-        { message: "Erro interno do servidor" },
+        { message: "Erro ao consultar o banco de dados" },
         HttpStatus.INTERNAL_SERVER_ERROR
       )
     });
   }
 
-  findAll(): Promise<CompaniesEntity[]> {
-    return this.companiesRepository.find().catch((error) => {
+  findAll(query: object): Promise<CompaniesEntity[]> {
+    return this.companiesRepository.find({
+      where: query
+    }).catch((error) => {
       this.logger.error({
         location: '[Companies > findAll]',
         error
       })
       throw new HttpException(
-        { message: "Aconteceu algum erro ao tentar consultar o banco de dados" },
+        { message: "Erro ao consultar o banco de dados" },
         HttpStatus.INTERNAL_SERVER_ERROR
       )
     });
   }
 
   async findOne(id: number): Promise<CompaniesEntity> {
-    let company;
-    try {
-      company = await this.companiesRepository.findOne(id, { relations: ['productCategories'] });
-    } catch (error) {
+    let company = await this.companiesRepository.findOne(id, { relations: ['productCategories', 'users'] }).catch((error) => {
       this.logger.error({
         location: '[Companies > findOne]',
         error
       })
       throw new HttpException(
-        { message: "Ocorreu um erro ao tentar consultar o banco de dados." },
+        { message: "Erro ao consultar o banco de dados" },
         HttpStatus.INTERNAL_SERVER_ERROR
       )
-    }
+    });
     if (!company) {
       this.logger.warn("Company's id not found.")
       throw new HttpException(
-        { message: "Id da empresa não encontrado" },
+        { message: "Empresa não encontrada" },
         HttpStatus.NOT_FOUND
       )
     }

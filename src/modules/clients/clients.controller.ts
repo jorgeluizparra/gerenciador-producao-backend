@@ -16,7 +16,7 @@ export class ClientsController {
       type: ClientsEntity
   })
   @ApiBadRequestResponse({
-    description: 'Email or CPF already signed up',
+    description: 'Email or CPF already signed up or invalid CPF',
     type: ErrorMessageDto
   })
   @ApiInternalServerErrorResponse({
