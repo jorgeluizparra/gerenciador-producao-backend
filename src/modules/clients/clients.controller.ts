@@ -12,15 +12,15 @@ export class ClientsController {
 
   @Post()
   @ApiCreatedResponse({
-      description: '',
+      description: 'Client created successfully',
       type: ClientsEntity
   })
   @ApiBadRequestResponse({
-    description: '',
+    description: 'Email or CPF already signed up',
     type: ErrorMessageDto
   })
-  @ApiConflictResponse({
-    description: '',
+  @ApiInternalServerErrorResponse({
+    description: 'Error consulting the database',
     type: ErrorMessageDto
   })
   async create(@Body() body: CreateClientDto): Promise<ClientsEntity> {
@@ -29,11 +29,11 @@ export class ClientsController {
 
   @Get()
   @ApiOkResponse({
-      description: '',
+      description: 'Return all clients that match with query',
       type: [ClientsEntity]
   })
   @ApiInternalServerErrorResponse({
-    description: '',
+    description: 'Error consulting the database',
     type: ErrorMessageDto
   })
   async findAll(@Query() query: object): Promise<ClientsEntity[]> {
@@ -42,15 +42,15 @@ export class ClientsController {
 
   @Get(':id')
   @ApiOkResponse({
-    description: '',
+    description: 'Return the client data',
     type: ClientsEntity
   })
   @ApiNotFoundResponse({
-    description: '',
+    description: 'Client not found',
     type: ErrorMessageDto
   })
   @ApiInternalServerErrorResponse({
-    description: '',
+    description: 'Error consulting the database',
     type: ErrorMessageDto
   })
   async findOne(@Param('id') id: number): Promise<ClientsEntity> {
@@ -59,15 +59,15 @@ export class ClientsController {
 
   @Put(':id')
   @ApiOkResponse({
-    description: '',
+    description: 'Client data updated successfully',
     type: ClientsEntity
   })
   @ApiNotFoundResponse({
-    description: '',
+    description: 'Client not found',
     type: ErrorMessageDto
   })
   @ApiInternalServerErrorResponse({
-    description: '',
+    description: 'Error consulting the database',
     type: ErrorMessageDto
   })
   async updateOne(@Param('id') id: number, @Body() body: UpdateClientDto): Promise<ClientsEntity> {

@@ -13,12 +13,12 @@ export class ProductsService {
   constructor(
     @InjectRepository(ProductsEntity)
     private productsRepository: Repository<ProductsEntity>,
-    private productsCategorie: ProductCategoriesService
+    private productsCategories: ProductCategoriesService
   ) {}
 
   async create (body: CreateProductDto): Promise<ProductsEntity> {
     let product = this.productsRepository.create(body)
-    let productCategory = await this.productsCategorie.findOne(body.productCategoryId);
+    let productCategory = await this.productsCategories.findOne(body.productCategoryId);
     product.productCategory = productCategory
     return this.productsRepository.save(product).catch((error) => {
       this.logger.error({
@@ -58,7 +58,7 @@ export class ProductsService {
 
   async updateOne(id: number, body: UpdateProductDto): Promise<ProductsEntity> {
     let product = await this.findOne(id);
-    let productCategory = await this.productsCategorie.findOne(body.productCategoryId);
+    let productCategory = await this.productsCategories.findOne(body.productCategoryId);
     product.productCategory = productCategory;
     await this.productsRepository.update({ id }, body);
     return this.findOne(id);

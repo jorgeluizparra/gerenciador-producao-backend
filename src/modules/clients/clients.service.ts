@@ -14,6 +14,20 @@ export class ClientsService {
   ) {}
 
   async create (body: CreateClientDto): Promise<ClientsEntity> {
+    let clients = await this.findAll([
+      { email: body.email },
+      { cpf: body.cpf }
+    ])
+    if (clients.length > 0) {
+      this.logger.warn({
+        location: '[Clients > create]',
+        message: "Email or CPF already signed up"
+      })
+      throw new HttpException(
+        { message: "Email ou CPF já cadastrados" },
+        HttpStatus.BAD_REQUEST
+      )
+    }
     let client = this.clientsRepository.create(body)
     return this.clientsRepository.save(client).catch((error) => {
       this.logger.error({
@@ -21,7 +35,7 @@ export class ClientsService {
         error
       })
       throw new HttpException(
-        { message: "Erro interno do servidor" },
+        { message: "Erro ao consultar o banco de dados" },
         HttpStatus.INTERNAL_SERVER_ERROR
       )
     });
@@ -34,30 +48,27 @@ export class ClientsService {
         error
       })
       throw new HttpException(
-        { message: "Aconteceu algum erro ao tentar consultar o banco de dados" },
+        { message: "Erro ao consultar o banco de dados" },
         HttpStatus.INTERNAL_SERVER_ERROR
       )
     });
   }
 
   async findOne(id: number): Promise<ClientsEntity> {
-    let client;
-    try {
-      client = await this.clientsRepository.findOne(id, { relations: ['productCategories'] });
-    } catch (error) {
+    let client = await this.clientsRepository.findOne(id, { relations: ['creditCards'] }).catch((error) => {
       this.logger.error({
         location: '[Clients > findOne]',
         error
       })
       throw new HttpException(
-        { message: "" },
+        { message: "Erro ao consultar o banco de dados" },
         HttpStatus.INTERNAL_SERVER_ERROR
       )
-    }
+    });
     if (!client) {
-      this.logger.warn("")
+      this.logger.warn("User not found")
       throw new HttpException(
-        { message: "" },
+        { message: "Usuário não encontrado" },
         HttpStatus.NOT_FOUND
       )
     }
@@ -70,7 +81,8 @@ export class ClientsService {
     return this.findOne(id);
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
+    await this.findOne(id);
     await this.clientsRepository.delete(id);
   }
 

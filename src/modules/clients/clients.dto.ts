@@ -15,7 +15,7 @@ export class CreateClientDto {
     @IsString()
     @IsNotEmpty()
     @ApiProperty()
-    accessType: string;
+    cpf: string;
 
     @IsOptional()
     @IsBoolean()
