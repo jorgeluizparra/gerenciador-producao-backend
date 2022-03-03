@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ErrorMessageDto } from 'src/modules/common.dto';
-import { CreateCreditCardDto } from './credit.cards.dto';
+import { CreateCreditCardDto, UpdateCreditCardDto } from './credit.cards.dto';
 import { CreditCardsEntity } from './credit.cards.entity';
 import { CreditCardsService } from './credit.cards.service';
 
@@ -58,6 +58,23 @@ export class CreditCardsController {
   })
   async findOne(@Param('id') id: number): Promise<CreditCardsEntity> {
     return this.creditCardsService.findOne(id)
+  }
+
+  @Put(':id')
+  @ApiOkResponse({
+    description: 'Credit card data updated successfully',
+    type: CreditCardsEntity
+  })
+  @ApiNotFoundResponse({
+    description: 'Credit card not found',
+    type: ErrorMessageDto
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Error consulting the database',
+    type: ErrorMessageDto
+  })
+  async updateOne(@Param('id') id: number, @Body() body: UpdateCreditCardDto): Promise<CreditCardsEntity> {
+    return this.creditCardsService.updateOne(id, body)
   }
 
   @ApiOkResponse({

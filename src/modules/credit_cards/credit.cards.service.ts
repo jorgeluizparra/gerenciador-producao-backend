@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ClientsService } from '../clients/clients.service';
-import { CreateCreditCardDto } from './credit.cards.dto';
+import { CreateCreditCardDto, UpdateCreditCardDto } from './credit.cards.dto';
 import { CreditCardsEntity } from './credit.cards.entity';
 
 @Injectable()
@@ -63,6 +63,12 @@ export class CreditCardsService {
       )
     }
     return creditCard;
+  }
+
+  async updateOne(id: number, body: UpdateCreditCardDto): Promise<CreditCardsEntity> {
+    await this.findOne(id);
+    await this.creditCardsRepository.update({ id }, body);
+    return this.findOne(id);
   }
 
   async remove(id: number): Promise<void> {
