@@ -24,5 +24,5 @@ export class CreateClientDto {
 }
 
 export class UpdateClientDto extends PartialType(
-    OmitType(CreateClientDto, ['email'] as const),
+    OmitType(CreateClientDto, ['email', 'cpf'] as const),
 ) {}

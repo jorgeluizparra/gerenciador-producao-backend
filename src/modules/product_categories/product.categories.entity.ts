@@ -19,6 +19,8 @@ export class ProductCategoriesEntity {
 
   @ManyToOne(() => CompaniesEntity, company => company.productCategories)
   company: CompaniesEntity;
+  @Column()
+  companyId: number;
 
   @OneToMany(() => ProductsEntity, product => product.productCategory)
   products: ProductsEntity[];

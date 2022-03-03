@@ -25,13 +25,13 @@ export class CreditCardsService {
         error
       })
       throw new HttpException(
-        { message: "Erro interno do servidor" },
+        { message: "Erro ao consultar o banco de dados" },
         HttpStatus.INTERNAL_SERVER_ERROR
       )
     });
   }
 
-  findAll(query): Promise<CreditCardsEntity[]> {
+  findAll(query: object): Promise<CreditCardsEntity[]> {
     return this.creditCardsRepository.find({ where: query}).catch((error) => {
       this.logger.error({
         location: '[Product Categories > findAll]',
@@ -45,31 +45,38 @@ export class CreditCardsService {
   }
 
   async findOne(id: number): Promise<CreditCardsEntity> {
-    let creditCard;
-    try {
-      creditCard = await this.creditCardsRepository.findOne(id, { relations: ['products'] });
-    } catch (error) {
+    let creditCard = await this.creditCardsRepository.findOne(id, { relations: [] }).catch((error) => {
       this.logger.error({
-        location: '[Product Categories > findOne]',
+        location: '[Creadit Cards > findOne]',
         error
       })
       throw new HttpException(
-        { message: "Erro ao tentar consultar o banco de dados." },
+        { message: "Aconteceu algum erro ao tentar consultar o banco de dados" },
         HttpStatus.INTERNAL_SERVER_ERROR
       )
-    }
+    });
     if (!creditCard) {
-      this.logger.warn("Product category id not found")
+      this.logger.warn("Credit card id not found")
       throw new HttpException(
-        { message: "Categoria não encontrada" },
+        { message: "Cartão de credito não encontrado" },
         HttpStatus.NOT_FOUND
       )
     }
     return creditCard;
   }
 
-  async remove(id: string): Promise<void> {
-    await this.creditCardsRepository.delete(id);
+  async remove(id: number): Promise<void> {
+    await this.findOne(id)
+    await this.creditCardsRepository.delete(id).catch((error) => {
+      this.logger.error({
+        location: '[Creadit Cards > remove]',
+        error
+      })
+      throw new HttpException(
+        { message: "Erro ao consultar o banco de dados" },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      )
+    });
   }
 
 }

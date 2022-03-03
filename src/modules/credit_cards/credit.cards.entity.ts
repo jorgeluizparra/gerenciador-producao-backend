@@ -12,10 +12,26 @@ export class CreditCardsEntity {
 
   @ApiProperty()
   @Column()
-  name: string;
+  number: string;
 
   @ApiProperty()
-  @Column({ default: true })
+  @Column()
+  expirationDate: string;
+
+  @ApiProperty()
+  @Column()
+  ownerName: string;
+
+  @ApiProperty()
+  @Column()
+  ownerCpf: string;
+
+  @ApiProperty()
+  @Column()
+  ownerBirthDate: string;
+
+  @ApiProperty()
+  @Column({ default: false })
   isActive: boolean;
 
   @ManyToOne(() => ClientsEntity, client => client.creditCards)

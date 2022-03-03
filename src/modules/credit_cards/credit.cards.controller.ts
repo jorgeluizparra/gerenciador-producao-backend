@@ -1,6 +1,5 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { query } from 'express';
 import { ErrorMessageDto } from 'src/modules/common.dto';
 import { CreateCreditCardDto } from './credit.cards.dto';
 import { CreditCardsEntity } from './credit.cards.entity';
@@ -13,15 +12,15 @@ export class CreditCardsController {
 
   @Post()
   @ApiCreatedResponse({
-      description: '',
+      description: 'Credit card created successfully',
       type: CreditCardsEntity
   })
   @ApiBadRequestResponse({
-    description: '',
+    description: 'Client id not found',
     type: ErrorMessageDto
   })
-  @ApiConflictResponse({
-    description: '',
+  @ApiInternalServerErrorResponse({
+    description: 'Error consulting the database',
     type: ErrorMessageDto
   })
   async create(@Body() body: CreateCreditCardDto): Promise<CreditCardsEntity> {
@@ -30,11 +29,11 @@ export class CreditCardsController {
 
   @Get()
   @ApiOkResponse({
-      description: '',
+      description: 'Return all credit cards that match with the query',
       type: [CreditCardsEntity]
   })
   @ApiInternalServerErrorResponse({
-    description: '',
+    description: 'Error consulting the database',
     type: ErrorMessageDto
   })
   @ApiQuery({ name: 'company', required: false })
@@ -46,15 +45,15 @@ export class CreditCardsController {
 
   @Get(':id')
   @ApiOkResponse({
-    description: '',
+    description: 'Return the credit card data',
     type: CreditCardsEntity
   })
   @ApiNotFoundResponse({
-    description: '',
+    description: 'Credit card id not found',
     type: ErrorMessageDto
   })
   @ApiInternalServerErrorResponse({
-    description: '',
+    description: 'Error consulting the database',
     type: ErrorMessageDto
   })
   async findOne(@Param('id') id: number): Promise<CreditCardsEntity> {
@@ -62,15 +61,19 @@ export class CreditCardsController {
   }
 
   @ApiOkResponse({
-    description: '',
+    description: 'Credit card deleted successfully',
     type: CreditCardsEntity
   })
+  @ApiNotFoundResponse({
+    description: 'Credit card id not found',
+    type: ErrorMessageDto
+  })
   @ApiInternalServerErrorResponse({
-    description: '',
+    description: 'Error consulting the database',
     type: ErrorMessageDto
   })
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<void> {
+  async remove(@Param('id') id: number): Promise<void> {
     return this.creditCardsService.remove(id)
   }
 }
