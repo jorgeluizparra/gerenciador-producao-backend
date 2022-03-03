@@ -1,12 +1,32 @@
-import { ApiProperty, OmitType, PartialType } from "@nestjs/swagger";
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { ApiProperty, ApiPropertyOptional, OmitType, PartialType } from "@nestjs/swagger";
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateCreditCardDto {
     
     @IsString()
     @IsNotEmpty()
     @ApiProperty()
-    name: string;
+    number: string;
+  
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty()
+    expirationDate: string;
+  
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty()
+    ownerName: string;
+  
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty()
+    ownerCpf: string;
+  
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty()
+    ownerBirthDate: string;
 
     @IsNumber()
     @IsNotEmpty()
