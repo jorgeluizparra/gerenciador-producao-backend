@@ -75,8 +75,7 @@ export class ClientsController {
   }
 
   // @ApiOkResponse({
-  //   description: '',
-  //   type: ClientsEntity
+  //   description: ''
   // })
   // @ApiInternalServerErrorResponse({
   //   description: '',

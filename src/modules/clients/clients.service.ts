@@ -73,7 +73,7 @@ export class ClientsService {
       )
     });
     if (!client) {
-      this.logger.warn("User not found")
+      this.logger.warn("Client not found")
       throw new HttpException(
         { message: "Usuário não encontrado" },
         HttpStatus.NOT_FOUND
@@ -84,7 +84,16 @@ export class ClientsService {
 
   async updateOne(id: number, body: UpdateClientDto): Promise<ClientsEntity> {
     await this.findOne(id);
-    await this.clientsRepository.update({ id }, body);
+    await this.clientsRepository.update({ id }, body).catch(error => {
+      this.logger.error({
+        location: '[Clients > updateOne]',
+        error
+      })
+      throw new HttpException(
+        { message: "Erro ao consultar o banco de dados" },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      )
+    });
     return this.findOne(id);
   }
 

@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ErrorMessageDto } from 'src/modules/common.dto';
-import { CreateTemplateDto, UpdateTemplateDto } from './templates.dto';
-import { TemplatesEntity } from './templates.entity';
-import { TemplatesService } from './templates.service';
+import { CreateTemplateDto } from './template.dto';
+import { TemplatesEntity } from './template.entity';
+import { TemplatesService } from './template.service';
 
 @ApiTags('Templates')
 @Controller('templates')
@@ -12,15 +12,15 @@ export class TemplatesController {
 
   @Post()
   @ApiCreatedResponse({
-      description: '',
+      description: 'Template created successfully',
       type: TemplatesEntity
   })
   @ApiBadRequestResponse({
-    description: '',
+    description: 'Company id not found',
     type: ErrorMessageDto
   })
-  @ApiConflictResponse({
-    description: '',
+  @ApiInternalServerErrorResponse({
+    description: 'Error consulting the database',
     type: ErrorMessageDto
   })
   async create(@Body() body: CreateTemplateDto): Promise<TemplatesEntity> {
@@ -29,61 +29,50 @@ export class TemplatesController {
 
   @Get()
   @ApiOkResponse({
-      description: '',
-      type: [TemplatesEntity]
+    description: 'Return all product categories that match with the query',
+    type: [TemplatesEntity]
   })
   @ApiInternalServerErrorResponse({
-    description: '',
+    description: 'Error consulting the database',
     type: ErrorMessageDto
   })
+  // @ApiQuery({ name: 'company', required: false })
   async findAll(@Query() query: object): Promise<TemplatesEntity[]> {
+    console.log(query);
+    
     return this.templatesService.findAll(query)
   }
 
   @Get(':id')
   @ApiOkResponse({
-    description: '',
+    description: 'Return the template data',
     type: TemplatesEntity
   })
   @ApiNotFoundResponse({
-    description: '',
+    description: 'Template id not found',
     type: ErrorMessageDto
   })
   @ApiInternalServerErrorResponse({
-    description: '',
+    description: 'Error consulting the database',
     type: ErrorMessageDto
   })
   async findOne(@Param('id') id: number): Promise<TemplatesEntity> {
     return this.templatesService.findOne(id)
   }
 
-  @Put(':id')
   @ApiOkResponse({
-    description: '',
-    type: TemplatesEntity
+    description: 'Template deleted successfully'
   })
   @ApiNotFoundResponse({
-    description: '',
+    description: 'Template id not found',
     type: ErrorMessageDto
   })
   @ApiInternalServerErrorResponse({
-    description: '',
-    type: ErrorMessageDto
-  })
-  async updateOne(@Param('id') id: number, @Body() body: UpdateTemplateDto): Promise<TemplatesEntity> {
-    return this.templatesService.updateOne(id, body)
-  }
-
-  @ApiOkResponse({
-    description: '',
-    type: TemplatesEntity
-  })
-  @ApiInternalServerErrorResponse({
-    description: '',
+    description: 'Error consulting the database',
     type: ErrorMessageDto
   })
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<void> {
+  async remove(@Param('id') id: number): Promise<void> {
     return this.templatesService.remove(id)
   }
 }

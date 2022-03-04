@@ -45,27 +45,56 @@ export class ProductsService {
     });
   }
 
-  findOne(id: number): Promise<ProductsEntity> {
-    try {
-      return this.productsRepository.findOne(id);
-    } catch (error) {
+  async findOne(id: number): Promise<ProductsEntity> {
+    let product = await this.productsRepository.findOne(id, { relations: [] }).catch((error) => {
+      this.logger.error({
+        location: '[Product > findOne]',
+        error
+      })
+      throw new HttpException(
+        { message: "Erro ao tentar consultar o banco de dados." },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      )
+    });
+    if (!product) {
+      this.logger.warn("Product id not found")
       throw new HttpException(
         { message: "Id não encontrado" },
         HttpStatus.NOT_FOUND
       )
     }
+    return product;
   }
 
   async updateOne(id: number, body: UpdateProductDto): Promise<ProductsEntity> {
     let product = await this.findOne(id);
     let productCategory = await this.productsCategories.findOne(body.productCategoryId);
     product.productCategory = productCategory;
-    await this.productsRepository.update({ id }, body);
+    await this.productsRepository.update({ id }, body).catch((error) => {
+      this.logger.error({
+        location: '[Product > updateOne]',
+        error
+      })
+      throw new HttpException(
+        { message: "Erro ao tentar consultar o banco de dados." },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      )
+    });
     return this.findOne(id);
   }
 
-  async remove(id: string): Promise<void> {
-    await this.productsRepository.delete(id);
+  async remove(id: number): Promise<void> {
+    await this.findOne(id)
+    await this.productsRepository.delete(id).catch((error) => {
+      this.logger.error({
+        location: '[Product > remove]',
+        error
+      })
+      throw new HttpException(
+        { message: "Erro ao tentar consultar o banco de dados." },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      )
+    });
   }
 
 }

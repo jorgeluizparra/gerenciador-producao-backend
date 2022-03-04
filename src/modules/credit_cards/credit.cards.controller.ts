@@ -36,7 +36,7 @@ export class CreditCardsController {
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
-  @ApiQuery({ name: 'company', required: false })
+  // @ApiQuery({ name: 'company', required: false })
   async findAll(@Query() query: object): Promise<CreditCardsEntity[]> {
     console.log(query);
     
@@ -60,26 +60,25 @@ export class CreditCardsController {
     return this.creditCardsService.findOne(id)
   }
 
-  @Put(':id')
-  @ApiOkResponse({
-    description: 'Credit card data updated successfully',
-    type: CreditCardsEntity
-  })
-  @ApiNotFoundResponse({
-    description: 'Credit card not found',
-    type: ErrorMessageDto
-  })
-  @ApiInternalServerErrorResponse({
-    description: 'Error consulting the database',
-    type: ErrorMessageDto
-  })
-  async updateOne(@Param('id') id: number, @Body() body: UpdateCreditCardDto): Promise<CreditCardsEntity> {
-    return this.creditCardsService.updateOne(id, body)
-  }
+  // @Put(':id')
+  // @ApiOkResponse({
+  //   description: 'Credit card data updated successfully',
+  //   type: CreditCardsEntity
+  // })
+  // @ApiNotFoundResponse({
+  //   description: 'Credit card not found',
+  //   type: ErrorMessageDto
+  // })
+  // @ApiInternalServerErrorResponse({
+  //   description: 'Error consulting the database',
+  //   type: ErrorMessageDto
+  // })
+  // async updateOne(@Param('id') id: number, @Body() body: UpdateCreditCardDto): Promise<CreditCardsEntity> {
+  //   return this.creditCardsService.updateOne(id, body)
+  // }
 
   @ApiOkResponse({
-    description: 'Credit card deleted successfully',
-    type: CreditCardsEntity
+    description: 'Credit card deleted successfully'
   })
   @ApiNotFoundResponse({
     description: 'Credit card id not found',

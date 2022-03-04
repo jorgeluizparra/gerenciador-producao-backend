@@ -12,15 +12,15 @@ export class UsersController {
 
   @Post()
   @ApiCreatedResponse({
-      description: '',
+      description: 'User created successfully',
       type: UsersEntity
   })
   @ApiBadRequestResponse({
-    description: '',
+    description: 'Email already signed up',
     type: ErrorMessageDto
   })
-  @ApiConflictResponse({
-    description: '',
+  @ApiInternalServerErrorResponse({
+    description: 'Error consulting the database',
     type: ErrorMessageDto
   })
   async create(@Body() body: CreateUserDto): Promise<UsersEntity> {
@@ -29,11 +29,11 @@ export class UsersController {
 
   @Get()
   @ApiOkResponse({
-      description: '',
-      type: [UsersEntity]
+    description: 'Return all users that match with query',
+    type: [UsersEntity]
   })
   @ApiInternalServerErrorResponse({
-    description: '',
+    description: 'Error consulting the database',
     type: ErrorMessageDto
   })
   async findAll(@Query() query: object): Promise<UsersEntity[]> {
@@ -42,15 +42,15 @@ export class UsersController {
 
   @Get(':id')
   @ApiOkResponse({
-    description: '',
+    description: 'Return the user data',
     type: UsersEntity
   })
   @ApiNotFoundResponse({
-    description: '',
+    description: 'User id not found',
     type: ErrorMessageDto
   })
   @ApiInternalServerErrorResponse({
-    description: '',
+    description: 'Error consulting the database',
     type: ErrorMessageDto
   })
   async findOne(@Param('id') id: number): Promise<UsersEntity> {
@@ -59,15 +59,15 @@ export class UsersController {
 
   @Put(':id')
   @ApiOkResponse({
-    description: '',
+    description: 'User data updated successfully',
     type: UsersEntity
   })
   @ApiNotFoundResponse({
-    description: '',
+    description: 'User id not found',
     type: ErrorMessageDto
   })
   @ApiInternalServerErrorResponse({
-    description: '',
+    description: 'Error consulting the database',
     type: ErrorMessageDto
   })
   async updateOne(@Param('id') id: number, @Body() body: UpdateUserDto): Promise<UsersEntity> {
@@ -75,15 +75,14 @@ export class UsersController {
   }
 
   // @ApiOkResponse({
-  //   description: '',
-  //   type: UsersEntity
+  //   description: ''
   // })
   // @ApiInternalServerErrorResponse({
   //   description: '',
   //   type: ErrorMessageDto
   // })
   // @Delete(':id')
-  // async remove(@Param('id') id: string): Promise<void> {
+  // async remove(@Param('id') id: number): Promise<void> {
   //   return this.usersService.remove(id)
   // }
 }

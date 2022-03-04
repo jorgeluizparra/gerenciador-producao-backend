@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CompaniesService } from '../companies/companies.service';
 import { CreateUserDto, UpdateUserDto } from './users.dto';
 import { UsersEntity } from './users.entity';
 
@@ -11,10 +12,13 @@ export class UsersService {
   constructor(
     @InjectRepository(UsersEntity)
     private usersRepository: Repository<UsersEntity>,
-  ) {}
+    private companiesService: CompaniesService
+    ) {}
 
   async create (body: CreateUserDto): Promise<UsersEntity> {
     let user = this.usersRepository.create(body)
+    let company = await this.companiesService.findOne(body.companyId)
+    user.company = company
     return this.usersRepository.save(user).catch((error) => {
       this.logger.error({
         location: '[Users > create]',
@@ -34,30 +38,27 @@ export class UsersService {
         error
       })
       throw new HttpException(
-        { message: "Aconteceu algum erro ao tentar consultar o banco de dados" },
+        { message: "Erro ao consultar o banco de dados" },
         HttpStatus.INTERNAL_SERVER_ERROR
       )
     });
   }
 
   async findOne(id: number): Promise<UsersEntity> {
-    let user;
-    try {
-      user = await this.usersRepository.findOne(id, { relations: ['productCategories'] });
-    } catch (error) {
+    let user = await this.usersRepository.findOne(id, { relations: [] }).catch((error) => {
       this.logger.error({
         location: '[Users > findOne]',
         error
       })
       throw new HttpException(
-        { message: "" },
+        { message: "Erro ao consultar o banco de dados" },
         HttpStatus.INTERNAL_SERVER_ERROR
       )
-    }
+    });
     if (!user) {
-      this.logger.warn("")
+      this.logger.warn("User not found")
       throw new HttpException(
-        { message: "" },
+        { message: "Usuário não encontrado" },
         HttpStatus.NOT_FOUND
       )
     }
@@ -66,11 +67,21 @@ export class UsersService {
 
   async updateOne(id: number, body: UpdateUserDto): Promise<UsersEntity> {
     await this.findOne(id);
-    await this.usersRepository.update({ id }, body);
+    await this.usersRepository.update({ id }, body).catch(error => {
+      this.logger.error({
+        location: '[Users > updateOne]',
+        error
+      })
+      throw new HttpException(
+        { message: "Erro ao consultar o banco de dados" },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      )
+    });
     return this.findOne(id);
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
+    await this.findOne(id);
     await this.usersRepository.delete(id);
   }
 

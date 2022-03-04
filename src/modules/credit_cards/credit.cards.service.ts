@@ -21,7 +21,7 @@ export class CreditCardsService {
     creditCard.client = client
     return this.creditCardsRepository.save(creditCard).catch((error) => {
       this.logger.error({
-        location: '[CreditCards > create]',
+        location: '[Credit Cards > create]',
         error
       })
       throw new HttpException(
@@ -34,7 +34,7 @@ export class CreditCardsService {
   findAll(query: object): Promise<CreditCardsEntity[]> {
     return this.creditCardsRepository.find({ where: query}).catch((error) => {
       this.logger.error({
-        location: '[Product Categories > findAll]',
+        location: '[Credit cards > findAll]',
         error
       })
       throw new HttpException(
@@ -67,7 +67,16 @@ export class CreditCardsService {
 
   async updateOne(id: number, body: UpdateCreditCardDto): Promise<CreditCardsEntity> {
     await this.findOne(id);
-    await this.creditCardsRepository.update({ id }, body);
+    await this.creditCardsRepository.update({ id }, body).catch(error => {
+      this.logger.error({
+        location: '[Credit cards > updateOne]',
+        error
+      })
+      throw new HttpException(
+        { message: "Erro ao consultar o banco de dados" },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      )
+    });
     return this.findOne(id);
   }
 

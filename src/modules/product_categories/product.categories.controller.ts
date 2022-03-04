@@ -13,15 +13,15 @@ export class ProductCategoriesController {
 
   @Post()
   @ApiCreatedResponse({
-      description: '',
+      description: 'Product category created successfully',
       type: ProductCategoriesEntity
   })
   @ApiBadRequestResponse({
-    description: '',
+    description: 'Company id not found',
     type: ErrorMessageDto
   })
-  @ApiConflictResponse({
-    description: '',
+  @ApiInternalServerErrorResponse({
+    description: 'Error consulting the database',
     type: ErrorMessageDto
   })
   async create(@Body() body: CreateProductCategoryDto): Promise<ProductCategoriesEntity> {
@@ -30,14 +30,14 @@ export class ProductCategoriesController {
 
   @Get()
   @ApiOkResponse({
-      description: '',
-      type: [ProductCategoriesEntity]
+    description: 'Return all product categories that match with the query',
+    type: [ProductCategoriesEntity]
   })
   @ApiInternalServerErrorResponse({
-    description: '',
+    description: 'Error consulting the database',
     type: ErrorMessageDto
   })
-  @ApiQuery({ name: 'company', required: false })
+  // @ApiQuery({ name: 'company', required: false })
   async findAll(@Query() query: object): Promise<ProductCategoriesEntity[]> {
     console.log(query);
     
@@ -46,15 +46,15 @@ export class ProductCategoriesController {
 
   @Get(':id')
   @ApiOkResponse({
-    description: '',
+    description: 'Return the product category data',
     type: ProductCategoriesEntity
   })
   @ApiNotFoundResponse({
-    description: '',
+    description: 'Product category id not found',
     type: ErrorMessageDto
   })
   @ApiInternalServerErrorResponse({
-    description: '',
+    description: 'Error consulting the database',
     type: ErrorMessageDto
   })
   async findOne(@Param('id') id: number): Promise<ProductCategoriesEntity> {
@@ -62,15 +62,18 @@ export class ProductCategoriesController {
   }
 
   @ApiOkResponse({
-    description: '',
-    type: ProductCategoriesEntity
+    description: 'Product category deleted successfully'
+  })
+  @ApiNotFoundResponse({
+    description: 'Product category id not found',
+    type: ErrorMessageDto
   })
   @ApiInternalServerErrorResponse({
-    description: '',
+    description: 'Error consulting the database',
     type: ErrorMessageDto
   })
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<void> {
+  async remove(@Param('id') id: number): Promise<void> {
     return this.productCategoriesService.remove(id)
   }
 }

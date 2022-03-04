@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { SintegraService } from '../sintegra/sintegra.service';
-import { CreateTemplateDto, UpdateTemplateDto } from './templates.dto';
-import { TemplatesEntity } from './templates.entity';
+import { CompaniesService } from '../companies/companies.service';
+import { CreateTemplateDto } from './template.dto';
+import { TemplatesEntity } from './template.entity';
 
 @Injectable()
 export class TemplatesService {
@@ -12,11 +12,14 @@ export class TemplatesService {
   constructor(
     @InjectRepository(TemplatesEntity)
     private templatesRepository: Repository<TemplatesEntity>,
+    private companiesService: CompaniesService,
   ) {}
 
   async create (body: CreateTemplateDto): Promise<TemplatesEntity> {
-    let template = this.templatesRepository.create(body)
-    return this.templatesRepository.save(template).catch((error) => {
+    let productCategorie = this.templatesRepository.create(body);
+    let company = await this.companiesService.findOne(body.companyId);
+    productCategorie.company = company
+    return this.templatesRepository.save(productCategorie).catch((error) => {
       this.logger.error({
         location: '[Templates > create]',
         error
@@ -35,44 +38,45 @@ export class TemplatesService {
         error
       })
       throw new HttpException(
-        { message: "Aconteceu algum erro ao tentar consultar o banco de dados" },
+        { message: "Erro ao tentar consultar o banco de dados" },
         HttpStatus.INTERNAL_SERVER_ERROR
       )
     });
   }
 
   async findOne(id: number): Promise<TemplatesEntity> {
-    let template;
-    try {
-      template = await this.templatesRepository.findOne(id, { relations: ['productCategories'] });
-    } catch (error) {
+    let template = await this.templatesRepository.findOne(id, { relations: ['products'] }).catch((error) => {
       this.logger.error({
         location: '[Templates > findOne]',
         error
       })
       throw new HttpException(
-        { message: "" },
+        { message: "Erro ao tentar consultar o banco de dados." },
         HttpStatus.INTERNAL_SERVER_ERROR
       )
-    }
+    });
     if (!template) {
-      this.logger.warn("")
+      this.logger.warn("Template id not found")
       throw new HttpException(
-        { message: "" },
+        { message: "Id não encontrado" },
         HttpStatus.NOT_FOUND
       )
     }
     return template;
   }
 
-  async updateOne(id: number, body: UpdateTemplateDto): Promise<TemplatesEntity> {
-    await this.findOne(id);
-    await this.templatesRepository.update({ id }, body);
-    return this.findOne(id);
-  }
-
-  async remove(id: string): Promise<void> {
-    await this.templatesRepository.delete(id);
+  async remove(id: number): Promise<void> {
+    await this.findOne(id)
+    await this.templatesRepository.delete(id).catch((error) => {
+      this.logger.error({
+        location: '[Templates > remove]',
+        error
+      })
+      throw new HttpException(
+        { message: "Erro ao tentar consultar o banco de dados." },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      )
+    });
   }
 
 }

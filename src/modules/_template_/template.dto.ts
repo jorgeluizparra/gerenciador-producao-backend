@@ -1,5 +1,5 @@
-import { ApiProperty, ApiPropertyOptional, OmitType, PartialType } from "@nestjs/swagger";
-import { IsBoolean, IsNotEmpty, IsOptional, IsString, Length } from "class-validator";
+import { ApiProperty, OmitType, PartialType } from "@nestjs/swagger";
+import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class CreateTemplateDto {
     
@@ -8,11 +8,10 @@ export class CreateTemplateDto {
     @ApiProperty()
     name: string;
 
-    @Length(14)
-    @IsString()
+    @IsNumber()
     @IsNotEmpty()
     @ApiProperty()
-    cnpj: string;
+    companyId: number;
 }
 
 export class UpdateTemplateDto extends PartialType(

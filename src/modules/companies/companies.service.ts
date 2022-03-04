@@ -95,7 +95,16 @@ export class CompaniesService {
 
   async updateOne(id: number, body: UpdateCompanyDto): Promise<CompaniesEntity> {
     await this.findOne(id);
-    await this.companiesRepository.update({ id }, body);
+    await this.companiesRepository.update({ id }, body).catch(error => {
+      this.logger.error({
+        location: '[Companies > updateOne]',
+        error
+      })
+      throw new HttpException(
+        { message: "Erro ao consultar o banco de dados" },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      )
+    });
     return this.findOne(id);
   }
 
