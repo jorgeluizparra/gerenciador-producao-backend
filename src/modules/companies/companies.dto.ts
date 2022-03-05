@@ -13,13 +13,8 @@ export class CreateCompanyDto {
     @IsNotEmpty()
     @ApiProperty()
     cnpj: string;
-
-    @IsOptional()
-    @IsBoolean()
-    @ApiPropertyOptional()
-    isActive: boolean;
 }
 
 export class UpdateCompanyDto extends PartialType(
-    OmitType(CreateCompanyDto, [] as const),
+    OmitType(CreateCompanyDto, ['cnpj'] as const),
 ) {}

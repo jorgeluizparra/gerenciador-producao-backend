@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateClientDto, UpdateClientDto } from './clients.dto';
 import { ClientsEntity } from './clients.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class ClientsService {
@@ -36,6 +37,8 @@ export class ClientsService {
       )
     }
     let client = this.clientsRepository.create(body)
+    let salt = await bcrypt.genSalt()
+    client.password = await bcrypt.hash(client.password, salt)
     return this.clientsRepository.save(client).catch((error) => {
       this.logger.error({
         location: '[Clients > create]',

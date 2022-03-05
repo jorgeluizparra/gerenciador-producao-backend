@@ -1,0 +1,7 @@
+[ ] Users - Criar API para troca de senha
+[ ] Users - Criar API para troca de permissão
+[ ] Users - Pegar o id da empresa através do token do usuario que estiver criando ao invés de passar pelo
+body
+[ ] Categories - Pegar o id da empresa através do token do usuario que estiver criando ao invés de passar pelo e verificar se o usuario tem permissão para adicionar produtos a essa empresa
+body
+[ ] Products - Verificar se o usuario tem permissão para adicionar produtos a essa empresa

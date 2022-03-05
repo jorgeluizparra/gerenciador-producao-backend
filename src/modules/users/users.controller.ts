@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ErrorMessageDto } from '../common.dto';
-import { CreateUserDto, UpdateUserDto } from './users.dto';
+import { CreateUserDto } from './users.dto';
 import { UsersEntity } from './users.entity';
 import { UsersService } from './users.service';
 
@@ -57,22 +57,22 @@ export class UsersController {
     return this.usersService.findOne(id)
   }
 
-  @Put(':id')
-  @ApiOkResponse({
-    description: 'User data updated successfully',
-    type: UsersEntity
-  })
-  @ApiNotFoundResponse({
-    description: 'User id not found',
-    type: ErrorMessageDto
-  })
-  @ApiInternalServerErrorResponse({
-    description: 'Error consulting the database',
-    type: ErrorMessageDto
-  })
-  async updateOne(@Param('id') id: number, @Body() body: UpdateUserDto): Promise<UsersEntity> {
-    return this.usersService.updateOne(id, body)
-  }
+  // @Put(':id')
+  // @ApiOkResponse({
+  //   description: 'User data updated successfully',
+  //   type: UsersEntity
+  // })
+  // @ApiNotFoundResponse({
+  //   description: 'User id not found',
+  //   type: ErrorMessageDto
+  // })
+  // @ApiInternalServerErrorResponse({
+  //   description: 'Error consulting the database',
+  //   type: ErrorMessageDto
+  // })
+  // async updateOne(@Param('id') id: number, @Body() body: UpdateUserDto): Promise<UsersEntity> {
+  //   return this.usersService.updateOne(id, body)
+  // }
 
   // @ApiOkResponse({
   //   description: ''

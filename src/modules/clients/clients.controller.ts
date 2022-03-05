@@ -57,22 +57,22 @@ export class ClientsController {
     return this.clientsService.findOne(id)
   }
 
-  @Put(':id')
-  @ApiOkResponse({
-    description: 'Client data updated successfully',
-    type: ClientsEntity
-  })
-  @ApiNotFoundResponse({
-    description: 'Client not found',
-    type: ErrorMessageDto
-  })
-  @ApiInternalServerErrorResponse({
-    description: 'Error consulting the database',
-    type: ErrorMessageDto
-  })
-  async updateOne(@Param('id') id: number, @Body() body: UpdateClientDto): Promise<ClientsEntity> {
-    return this.clientsService.updateOne(id, body)
-  }
+  // @Put(':id')
+  // @ApiOkResponse({
+  //   description: 'Client data updated successfully',
+  //   type: ClientsEntity
+  // })
+  // @ApiNotFoundResponse({
+  //   description: 'Client not found',
+  //   type: ErrorMessageDto
+  // })
+  // @ApiInternalServerErrorResponse({
+  //   description: 'Error consulting the database',
+  //   type: ErrorMessageDto
+  // })
+  // async updateOne(@Param('id') id: number, @Body() body: UpdateClientDto): Promise<ClientsEntity> {
+  //   return this.clientsService.updateOne(id, body)
+  // }
 
   // @ApiOkResponse({
   //   description: ''

@@ -1,9 +1,20 @@
-import { ApiProperty, ApiPropertyOptional, OmitType, PartialType } from "@nestjs/swagger";
+import { ApiProperty, PartialType, PickType } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
-import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, IsEmail, ValidateIf } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString, IsEmail,ValidatorConstraint, ValidatorConstraintInterface, Matches, Length, Validate } from "class-validator";
 import { AccessType } from "./users.entity";
 
 const AcceptedAccountTypes: AccessType[] = ['admin', 'normal']
+
+@ValidatorConstraint({ name: 'accountType', async: false })
+export class ValidateAccountType implements ValidatorConstraintInterface {
+  validate(accountType) {
+    return AcceptedAccountTypes.includes(accountType.toLowerCase()) ? true : false
+  }
+
+  defaultMessage() {
+    return "Permissão inválida.";
+  }
+}
 
 export class CreateUserDto {
     @IsEmail()
@@ -13,16 +24,19 @@ export class CreateUserDto {
 
     @IsString()
     @IsNotEmpty()
+    @Length(8)
+    @Matches(/(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])(?=.{8,})./, { message: 'Senha muito fraca.' })
     @ApiProperty()
     password: string;
 
-    @IsOptional()
-    @IsBoolean()
-    @ApiPropertyOptional()
-    isActive: boolean;
+    // @IsString()
+    // @MinLength(8)
+    // @Matches('password')
+    // @ApiProperty()
+    // passwordConfirm: string;
 
     @IsString()
-    @ValidateIf(value => AcceptedAccountTypes.includes(value.toLowerCase()))
+    @Validate(ValidateAccountType)
     @Transform(({ value }) => value.toLowerCase())
     @IsNotEmpty()
     @ApiProperty()
@@ -35,5 +49,9 @@ export class CreateUserDto {
 }
 
 export class UpdateUserDto extends PartialType(
-    OmitType(CreateUserDto, ['email'] as const),
+    PickType(CreateUserDto, ['accessType', 'password'] as const),
 ) {}
+
+export class UpdateUserAccountTypeDto extends PickType(CreateUserDto, ['accessType'] as const) {}
+
+export class UpdateUserPasswordDto extends PickType(CreateUserDto, ['password'] as const) {}

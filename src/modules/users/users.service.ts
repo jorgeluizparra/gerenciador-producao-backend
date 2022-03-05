@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CompaniesService } from '../companies/companies.service';
 import { CreateUserDto, UpdateUserDto } from './users.dto';
 import { UsersEntity } from './users.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -16,9 +17,23 @@ export class UsersService {
     ) {}
 
   async create (body: CreateUserDto): Promise<UsersEntity> {
+    let users = await this.findAll([
+      { email: body.email }
+    ])
+    if (users.length > 0) {
+      this.logger.warn({
+        location: '[Users > create]',
+        message: "Email already signed up"
+      })
+      throw new HttpException(
+        { message: "Email já cadastrados" },
+        HttpStatus.BAD_REQUEST
+      )
+    }
     let user = this.usersRepository.create(body)
-    let company = await this.companiesService.findOne(body.companyId)
-    user.company = company
+    let salt = await bcrypt.genSalt();
+    user.password = await bcrypt.hash(user.password, salt)
+    user.company = await this.companiesService.findOne(body.companyId)
     return this.usersRepository.save(user).catch((error) => {
       this.logger.error({
         location: '[Users > create]',
