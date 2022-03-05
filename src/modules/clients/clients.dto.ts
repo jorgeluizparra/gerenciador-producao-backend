@@ -1,8 +1,8 @@
 import { ApiProperty, ApiPropertyOptional, OmitType, PartialType } from "@nestjs/swagger";
-import { IsBoolean, IsNotEmpty, IsOptional, IsString, Length } from "class-validator";
+import { IsBoolean, IsNotEmpty, IsOptional, IsString, Length, IsEmail } from "class-validator";
 
 export class CreateClientDto {
-    @IsString()
+    @IsEmail()
     @IsNotEmpty()
     @ApiProperty()
     email: string;

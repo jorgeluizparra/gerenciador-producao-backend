@@ -6,7 +6,7 @@ import { CreateClientDto } from '../src/modules/clients/clients.dto';
 import { getConnection } from 'typeorm';
 import { ClientsEntity } from '../src/modules/clients/clients.entity';
 
-describe('Clients Module (e2e)', () => {
+describe('[Clients]', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
@@ -18,8 +18,8 @@ describe('Clients Module (e2e)', () => {
     await app.init();
   });
 
-  const connection = getConnection();
-  const clientRepository = connection.getRepository(ClientsEntity)
+  // const connection = getConnection();
+  // const clientRepository = connection.getRepository(ClientsEntity)
 
   it('create', async () => {
     let payload: CreateClientDto = {
@@ -28,13 +28,22 @@ describe('Clients Module (e2e)', () => {
       cpf: '12312312312'
     }
 
-    let {status, body} = await request(app.getHttpServer())
+    let {status} = await request(app.getHttpServer())
     .post('/clients')
     .send(payload)
 
     expect(status).toBe(201)
-    expect(Object.keys(body)).toBe(["id", "email"])
-    expect(body).toContainEqual({
+  });
+
+  it('findAll', async () => {
+
+    let {status, body} = await request(app.getHttpServer())
+    .get('/clients')
+
+    expect(status).toBe(200)
+    expect(Array.isArray(body)).toBe(true)
+    expect(Object.keys(body[0])).toBe(["id", "email"])
+    expect(body[0]).toContainEqual({
       id: expect.any(Number),
       name: expect.any(String)
     })

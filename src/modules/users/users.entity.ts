@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { CompaniesEntity } from '../companies/companies.entity';
+
+export type AccessType = 'admin' | 'normal'
 
 @Entity('users')
 export class UsersEntity {
@@ -9,23 +11,37 @@ export class UsersEntity {
   id: number;
 
   @ApiProperty()
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: false })
   email: string;
 
-  @ApiProperty()
-  @Column({ select: false })
+  @Column({ select: false, nullable: false })
   password: string;
 
-  @ApiProperty()
-  @Column()
-  accessType: string;
+  @Column({ nullable: false })
+  accessType: AccessType;
 
   @ApiProperty()
-  @Column({ default: false })
+  @Column({ default: false, nullable: false})
   isActive: boolean;
+
+  @ApiProperty()
+  @Column({ default: false, nullable: false })
+  createdBy: string;
+
+  @ApiProperty()
+  @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", select: false })
+  createdAt: Date;
+
+  @ApiProperty()
+  @Column({ default: false, nullable: false })
+  updatedBy: string;
+
+  @ApiProperty()
+  @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
+  updatedAt: Date;
 
   @ManyToOne(() => CompaniesEntity, company => company.users)
   company?: CompaniesEntity;
-  @Column()
+  @Column({ nullable: false })
   companyId: number;
 }

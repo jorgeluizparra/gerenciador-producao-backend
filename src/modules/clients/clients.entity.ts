@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
+import { boolean } from 'joi';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { CreditCardsEntity } from '../credit_cards/credit.cards.entity';
 
 @Entity('clients')
@@ -9,20 +10,20 @@ export class ClientsEntity {
   id: number;
 
   @ApiProperty()
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: false })
   email: string;
 
-  @ApiProperty()
-  @Column({ select: false })
+  @Column({ select: false, nullable: false })
   password: string;
 
-  @ApiProperty()
-  @Column({ unique: true, select: false })
+  @Column({ unique: true, select: false, nullable: false })
   cpf: string;
 
-  @ApiProperty()
-  @Column({ default: false, select: false })
+  @Column({ default: false, select: false, nullable: false })
   isActive: boolean;
+
+  @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", select: false })
+  createdAt: Date;
 
   @OneToMany(() => CreditCardsEntity, creditCard => creditCard.client)
   creditCards?: CreditCardsEntity[];

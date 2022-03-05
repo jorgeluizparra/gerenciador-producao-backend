@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { CompaniesEntity } from '../companies/companies.entity';
 import { ProductsEntity } from '../products/products.entity';
 
@@ -10,16 +10,24 @@ export class ProductCategoriesEntity {
   id: number;
 
   @ApiProperty()
-  @Column()
+  @Column({ nullable: false })
   name: string;
 
   @ApiProperty()
-  @Column({ default: true })
+  @Column({ default: true, nullable: false })
   isActive: boolean;
+
+  @ApiProperty()
+  @Column({ default: false, nullable: false })
+  updatedBy: string;
+
+  @ApiProperty()
+  @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
+  updatedAt: Date;
 
   @ManyToOne(() => CompaniesEntity, company => company.productCategories)
   company?: CompaniesEntity;
-  @Column()
+  @Column({ nullable: false })
   companyId: number;
 
   @OneToMany(() => ProductsEntity, product => product.productCategory)

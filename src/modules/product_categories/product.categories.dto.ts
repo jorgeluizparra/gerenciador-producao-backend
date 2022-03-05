@@ -15,5 +15,5 @@ export class CreateProductCategoryDto {
 }
 
 export class UpdateProductCategoryDto extends PartialType(
-    OmitType(CreateProductCategoryDto, [] as const),
+    OmitType(CreateProductCategoryDto, ['companyId'] as const),
 ) {}

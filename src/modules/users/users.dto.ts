@@ -1,8 +1,12 @@
 import { ApiProperty, ApiPropertyOptional, OmitType, PartialType } from "@nestjs/swagger";
-import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, Length } from "class-validator";
+import { Transform } from "class-transformer";
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, IsEmail, ValidateIf } from "class-validator";
+import { AccessType } from "./users.entity";
+
+const AcceptedAccountTypes: AccessType[] = ['admin', 'normal']
 
 export class CreateUserDto {
-    @IsString()
+    @IsEmail()
     @IsNotEmpty()
     @ApiProperty()
     email: string;
@@ -18,9 +22,11 @@ export class CreateUserDto {
     isActive: boolean;
 
     @IsString()
+    @ValidateIf(value => AcceptedAccountTypes.includes(value.toLowerCase()))
+    @Transform(({ value }) => value.toLowerCase())
     @IsNotEmpty()
     @ApiProperty()
-    accessType: string;
+    accessType: AccessType;
 
     @IsNumber()
     @IsNotEmpty()

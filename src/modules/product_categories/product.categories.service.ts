@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CompaniesService } from '../companies/companies.service';
-import { CreateProductCategoryDto } from './product.categories.dto';
+import { CreateProductCategoryDto, UpdateProductCategoryDto } from './product.categories.dto';
 import { ProductCategoriesEntity } from './product.categories.entity';
 
 @Injectable()
@@ -63,6 +63,21 @@ export class ProductCategoriesService {
       )
     }
     return productCategory;
+  }
+
+  async updateOne(id: number, body: UpdateProductCategoryDto): Promise<ProductCategoriesEntity> {
+    await this.findOne(id);
+    await this.productCategoriesRepository.update({ id }, body).catch(error => {
+      this.logger.error({
+        location: '[Product Catergories > updateOne]',
+        error
+      })
+      throw new HttpException(
+        { message: "Erro ao consultar o banco de dados" },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      )
+    });
+    return this.findOne(id);
   }
 
   async remove(id: number): Promise<void> {

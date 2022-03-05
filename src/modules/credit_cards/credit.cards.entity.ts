@@ -1,8 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn } from 'typeorm';
 import { ClientsEntity } from '../clients/clients.entity';
-import { CompaniesEntity } from '../companies/companies.entity';
-import { ProductsEntity } from '../products/products.entity';
 
 @Entity('credit_cards')
 export class CreditCardsEntity {
@@ -11,31 +9,17 @@ export class CreditCardsEntity {
   id: number;
 
   @ApiProperty()
-  @Column()
+  @Column({ nullable: false })
   number: string;
 
-  @ApiProperty()
-  @Column()
+  @Column({ select: false, nullable: false })
   expirationDate: string;
 
-  @ApiProperty()
-  @Column()
-  ownerName: string;
-
-  @ApiProperty()
-  @Column()
-  ownerCpf: string;
-
-  @ApiProperty()
-  @Column()
-  ownerBirthDate: string;
-
-  @ApiProperty()
-  @Column({ default: false })
-  isActive: boolean;
+  @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", select: false })
+  createdAt: Date;
 
   @ManyToOne(() => ClientsEntity, client => client.creditCards)
   client?: ClientsEntity;
-  @Column()
+  @Column({ nullable: false })
   clientId: number;
 }
