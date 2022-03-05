@@ -3,18 +3,23 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { CreateClientDto } from '../src/modules/clients/clients.dto';
+import { getConnection } from 'typeorm';
+import { ClientsEntity } from '../src/modules/clients/clients.entity';
 
-describe('AppController (e2e)', () => {
+describe('Clients Module (e2e)', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
+    const module: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
-    app = moduleFixture.createNestApplication();
+    app = module.createNestApplication();
     await app.init();
   });
+
+  const connection = getConnection();
+  const clientRepository = connection.getRepository(ClientsEntity)
 
   it('create', async () => {
     let payload: CreateClientDto = {

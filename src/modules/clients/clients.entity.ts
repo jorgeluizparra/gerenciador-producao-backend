@@ -17,11 +17,11 @@ export class ClientsEntity {
   password: string;
 
   @ApiProperty()
-  @Column({ unique: true })
+  @Column({ unique: true, select: false })
   cpf: string;
 
   @ApiProperty()
-  @Column({ default: false })
+  @Column({ default: false, select: false })
   isActive: boolean;
 
   @OneToMany(() => CreditCardsEntity, creditCard => creditCard.client)
