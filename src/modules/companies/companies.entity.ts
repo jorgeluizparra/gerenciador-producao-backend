@@ -38,8 +38,8 @@ export class CompaniesEntity {
   isActive: boolean;
 
   @OneToMany(() => ProductCategoriesEntity, productCategory => productCategory.company)
-  productCategories: ProductCategoriesEntity[];
+  productCategories?: ProductCategoriesEntity[];
 
   @OneToMany(() => UsersEntity, user => user.company)
-  users: UsersEntity[];
+  users?: UsersEntity[];
 }

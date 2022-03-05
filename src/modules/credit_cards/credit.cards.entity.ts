@@ -35,7 +35,7 @@ export class CreditCardsEntity {
   isActive: boolean;
 
   @ManyToOne(() => ClientsEntity, client => client.creditCards)
-  client: ClientsEntity;
+  client?: ClientsEntity;
   @Column()
   clientId: number;
 }

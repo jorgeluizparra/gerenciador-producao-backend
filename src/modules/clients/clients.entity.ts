@@ -25,6 +25,6 @@ export class ClientsEntity {
   isActive: boolean;
 
   @OneToMany(() => CreditCardsEntity, creditCard => creditCard.client)
-  creditCards: CreditCardsEntity[];
+  creditCards?: CreditCardsEntity[];
 
 }

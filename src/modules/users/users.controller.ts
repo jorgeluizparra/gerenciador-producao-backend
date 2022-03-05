@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { ErrorMessageDto } from 'src/modules/common.dto';
+import { ErrorMessageDto } from '../common.dto';
 import { CreateUserDto, UpdateUserDto } from './users.dto';
 import { UsersEntity } from './users.entity';
 import { UsersService } from './users.service';

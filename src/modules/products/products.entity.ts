@@ -25,7 +25,7 @@ export class ProductsEntity {
   isActive: boolean;
 
   @ManyToOne(() => ProductCategoriesEntity, productCategory => productCategory.products)
-  productCategory: ProductCategoriesEntity;
+  productCategory?: ProductCategoriesEntity;
   @Column()
   productCategoryId: number;
 

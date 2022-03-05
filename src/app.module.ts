@@ -11,8 +11,8 @@ import { ProductsModule } from './modules/products/products.module';
 import { UsersModule } from './modules/users/users.module';
 import { ClientsModule } from './modules/clients/clients.module';
 import { CreditCardsModule } from './modules/credit_cards/credit.cards.module';
-
-process.env.NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
+import * as Joi from 'joi';
+import { TypeOrmConfigService } from './orm.config';
 
 @Module({
   imports: [
@@ -20,6 +20,12 @@ process.env.NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV : 'developmen
       rootPath: join(__dirname, '..', 'frontend'),
     }),
     ConfigModule.forRoot({
+      validationSchema: Joi.object({
+        NODE_ENV: Joi.string()
+          .valid('development', 'production', 'test')
+          .default('development'),
+        PORT: Joi.number().default(3000),
+      }),
       envFilePath: [
         `./envs/.${process.env.NODE_ENV}.env`,
         './envs/.env'
@@ -27,16 +33,7 @@ process.env.NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV : 'developmen
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
-      useFactory: () => ({
-        type: 'mysql',
-        host: process.env.DATABASE_HOST,
-        port: parseInt(process.env.DATABASE_PORT) || 3306,
-        username: process.env.DATABASE_USERNAME,
-        password: process.env.DATABASE_PASSWORD,
-        database: process.env.DATABASE_NAME,
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: process.env.NODE_ENV == "development" ? true : false,
-      })
+      useClass: TypeOrmConfigService
     }),
     CompaniesModule,
     ProductCategoriesModule,

@@ -18,10 +18,10 @@ export class ProductCategoriesEntity {
   isActive: boolean;
 
   @ManyToOne(() => CompaniesEntity, company => company.productCategories)
-  company: CompaniesEntity;
+  company?: CompaniesEntity;
   @Column()
   companyId: number;
 
   @OneToMany(() => ProductsEntity, product => product.productCategory)
-  products: ProductsEntity[];
+  products?: ProductsEntity[];
 }

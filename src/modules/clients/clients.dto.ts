@@ -20,7 +20,7 @@ export class CreateClientDto {
     @IsOptional()
     @IsBoolean()
     @ApiPropertyOptional()
-    isActive: boolean;
+    isActive?: boolean;
 }
 
 export class UpdateClientDto extends PartialType(

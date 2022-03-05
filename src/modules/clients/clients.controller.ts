@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { ErrorMessageDto } from 'src/modules/common.dto';
+import { ErrorMessageDto } from '../common.dto';
 import { CreateClientDto, UpdateClientDto } from './clients.dto';
 import { ClientsEntity } from './clients.entity';
 import { ClientsService } from './clients.service';
@@ -9,7 +9,7 @@ import { ClientsService } from './clients.service';
 @Controller('clients')
 export class ClientsController {
   constructor(private readonly clientsService: ClientsService) {}
-
+  
   @Post()
   @ApiCreatedResponse({
       description: 'Client created successfully',

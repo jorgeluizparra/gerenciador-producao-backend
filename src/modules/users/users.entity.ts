@@ -25,7 +25,7 @@ export class UsersEntity {
   isActive: boolean;
 
   @ManyToOne(() => CompaniesEntity, company => company.users)
-  company: CompaniesEntity;
+  company?: CompaniesEntity;
   @Column()
   companyId: number;
 }
