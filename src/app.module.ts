@@ -12,6 +12,7 @@ import { UsersModule } from './modules/users/users.module';
 import { ClientsModule } from './modules/clients/clients.module';
 import { CreditCardsModule } from './modules/credit_cards/credit.cards.module';
 import * as Joi from 'joi';
+import { TypeOrmConfigService } from './database';
 
 @Module({
   imports: [
@@ -32,20 +33,7 @@ import * as Joi from 'joi';
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
-      useFactory: () => ({
-        type: 'mysql',
-        host: process.env.DATABASE_HOST,
-        port: parseInt(process.env.DATABASE_PORT) || 3306,
-        username: process.env.DATABASE_USERNAME,
-        password: process.env.DATABASE_PASSWORD,
-        database: process.env.DATABASE_NAME,
-        autoLoadEntities: true,
-        synchronize: process.env.NODE_ENV == "production" ? false : true,
-        migrations: ["migration/*.js"],
-        cli: {
-          migrationsDir: "migration"
-        }
-      })
+      useClass: TypeOrmConfigService,
     }),
     CompaniesModule,
     ProductCategoriesModule,
