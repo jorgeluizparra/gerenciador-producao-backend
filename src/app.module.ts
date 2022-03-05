@@ -12,7 +12,7 @@ import { UsersModule } from './modules/users/users.module';
 import { ClientsModule } from './modules/clients/clients.module';
 import { CreditCardsModule } from './modules/credit_cards/credit.cards.module';
 import * as Joi from 'joi';
-import { TypeOrmConfigService } from './orm.config';
+import OrmConfig from '../ormconfig';
 
 @Module({
   imports: [
@@ -33,7 +33,7 @@ import { TypeOrmConfigService } from './orm.config';
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
-      useClass: TypeOrmConfigService
+      useFactory: () => OrmConfig
     }),
     CompaniesModule,
     ProductCategoriesModule,
