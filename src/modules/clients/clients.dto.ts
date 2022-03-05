@@ -25,17 +25,10 @@ export class CreateClientDto {
     @IsNotEmpty()
     @ApiProperty()
     cpf: string;
-
-    @IsOptional()
-    @IsBoolean()
-    @ApiPropertyOptional()
-    isActive?: boolean;
 }
 
 export class UpdateClientDto extends PartialType(
-    PickType(CreateClientDto, ['password', 'isActive'] as const),
+    PickType(CreateClientDto, ['password'] as const),
 ) {}
 
 export class UpdateClientPasswordDto extends PickType(CreateClientDto, ['password'] as const) {}
-
-export class EnableAccountDto extends PickType(CreateClientDto, ['isActive'] as const) {}
