@@ -18,8 +18,7 @@ async function bootstrap() {
   
   // API documentation
   const config = new DocumentBuilder()
-    .setTitle('Balcao App Backend')
-    .setDescription('This backend supplies the rest apis.')
+    .setTitle('Rolê! App Backend')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
