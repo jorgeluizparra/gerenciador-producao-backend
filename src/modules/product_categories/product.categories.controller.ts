@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { ErrorMessageDto } from '../common.dto';
+import { ErrorMessageDto } from '../../utils/common.dto';
 import { CreateProductCategoryDto, UpdateProductCategoryDto } from './product.categories.dto';
 import { ProductCategoriesEntity } from './product.categories.entity';
 import { ProductCategoriesService } from './product.categories.service';
@@ -60,22 +60,22 @@ export class ProductCategoriesController {
     return this.productCategoriesService.findOne(id)
   }
 
-  @Put(':id')
-  @ApiOkResponse({
-    description: 'Product category data updated.',
-    type: ProductCategoriesEntity
-  })
-  @ApiNotFoundResponse({
-    description: 'Not found the id.',
-    type: ErrorMessageDto
-  })
-  @ApiInternalServerErrorResponse({
-    description: 'Error consulting the database',
-    type: ErrorMessageDto
-  })
-  async updateOne(@Param('id') id: number, @Body() body: UpdateProductCategoryDto): Promise<ProductCategoriesEntity> {
-    return this.productCategoriesService.updateOne(id, body)
-  }
+  // @Put(':id')
+  // @ApiOkResponse({
+  //   description: 'Product category data updated.',
+  //   type: ProductCategoriesEntity
+  // })
+  // @ApiNotFoundResponse({
+  //   description: 'Not found the id.',
+  //   type: ErrorMessageDto
+  // })
+  // @ApiInternalServerErrorResponse({
+  //   description: 'Error consulting the database',
+  //   type: ErrorMessageDto
+  // })
+  // async updateOne(@Param('id') id: number, @Body() body: UpdateProductCategoryDto): Promise<ProductCategoriesEntity> {
+  //   return this.productCategoriesService.updateOne(id, body)
+  // }
 
   @ApiOkResponse({
     description: 'Product category deleted successfully'

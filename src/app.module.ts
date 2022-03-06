@@ -13,6 +13,7 @@ import { ClientsModule } from './modules/clients/clients.module';
 import { CreditCardsModule } from './modules/credit_cards/credit.cards.module';
 import * as Joi from 'joi';
 import { TypeOrmConfigService } from './database';
+import { EventsModule } from './modules/events/events.module';
 
 @Module({
   imports: [
@@ -40,7 +41,8 @@ import { TypeOrmConfigService } from './database';
     ProductsModule,
     UsersModule,
     ClientsModule,
-    CreditCardsModule
+    CreditCardsModule,
+    EventsModule
   ],
   controllers: [AppController],
   providers: [AppService],

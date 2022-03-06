@@ -1,10 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { CompaniesEntity } from '../companies/companies.entity';
-import { ProductCategoriesEntity } from '../product_categories/product.categories.entity';
 
-@Entity('products')
-export class ProductsEntity {
+@Entity('events')
+export class EventsEntity {
   @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
@@ -16,6 +15,18 @@ export class ProductsEntity {
   @ApiProperty()
   @Column({ type: 'text', nullable: false })
   description: string;
+
+  @ApiProperty()
+  @Column({ nullable: false })
+  location: string;
+
+  @ApiProperty()
+  @CreateDateColumn({ type: "datetime", select: false })
+  startsAt: Date;
+
+  @ApiProperty()
+  @CreateDateColumn({ type: "datetime", select: false })
+  endsAt: Date;
 
   @ApiProperty()
   @Column({ default: true, nullable: false })
@@ -37,10 +48,7 @@ export class ProductsEntity {
   @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
   updatedAt: Date;
 
-  @Column({ nullable: false })
-  productCategory: string;
-
-  @ManyToOne(() => CompaniesEntity, company => company.products)
+  @ManyToOne(() => CompaniesEntity, company => company.events)
   company?: CompaniesEntity;
   @Column({ nullable: false })
   companyId: number;

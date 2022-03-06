@@ -2,27 +2,26 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CompaniesService } from '../companies/companies.service';
-import { ProductCategoriesService } from '../product_categories/product.categories.service';
 import { SintegraService } from '../sintegra/sintegra.service';
-import { CreateProductDto, UpdateProductDto } from './products.dto';
-import { ProductsEntity } from './products.entity';
+import { CreateEventDto, UpdateEventDto } from './events.dto';
+import { EventsEntity } from './events.entity';
 
 @Injectable()
-export class ProductsService {
-  private readonly logger = new Logger(ProductsService.name);
+export class EventsService {
+  private readonly logger = new Logger(EventsService.name);
   
   constructor(
-    @InjectRepository(ProductsEntity)
-    private productsRepository: Repository<ProductsEntity>,
+    @InjectRepository(EventsEntity)
+    private eventsRepository: Repository<EventsEntity>,
     private companiesService: CompaniesService,
   ) {}
 
-  async create (body: CreateProductDto): Promise<ProductsEntity> {
-    let product = this.productsRepository.create(body)
-    product.company = await this.companiesService.findOne(body.companyId);
-    return this.productsRepository.save(product).catch((error) => {
+  async create (body: CreateEventDto): Promise<EventsEntity> {
+    let event = this.eventsRepository.create(body)
+    event.company = await this.companiesService.findOne(body.companyId);
+    return this.eventsRepository.save(event).catch((error) => {
       this.logger.error({
-        location: '[Products > create]',
+        location: '[Events > create]',
         error
       })
       throw new HttpException(
@@ -32,10 +31,10 @@ export class ProductsService {
     });
   }
 
-  findAll(query): Promise<ProductsEntity[]> {
-    return this.productsRepository.find({ where: query }).catch((error) => {
+  findAll(query): Promise<EventsEntity[]> {
+    return this.eventsRepository.find({ where: query }).catch((error) => {
       this.logger.error({
-        location: '[Products > findAll]',
+        location: '[Events > findAll]',
         error
       })
       throw new HttpException(
@@ -45,10 +44,10 @@ export class ProductsService {
     });
   }
 
-  async findOne(id: number): Promise<ProductsEntity> {
-    let product = await this.productsRepository.findOne(id, { relations: [] }).catch((error) => {
+  async findOne(id: number): Promise<EventsEntity> {
+    let event = await this.eventsRepository.findOne(id, { relations: [] }).catch((error) => {
       this.logger.error({
-        location: '[Product > findOne]',
+        location: '[Event > findOne]',
         error
       })
       throw new HttpException(
@@ -56,21 +55,21 @@ export class ProductsService {
         HttpStatus.INTERNAL_SERVER_ERROR
       )
     });
-    if (!product) {
-      this.logger.warn("Product id not found")
+    if (!event) {
+      this.logger.warn("Event id not found")
       throw new HttpException(
         { message: "Id não encontrado" },
         HttpStatus.NOT_FOUND
       )
     }
-    return product;
+    return event;
   }
 
-  async updateOne(id: number, body: UpdateProductDto): Promise<ProductsEntity> {
+  async updateOne(id: number, body: UpdateEventDto): Promise<EventsEntity> {
     await this.findOne(id);
-    await this.productsRepository.update({ id }, body).catch((error) => {
+    await this.eventsRepository.update({ id }, body).catch((error) => {
       this.logger.error({
-        location: '[Product > updateOne]',
+        location: '[Event > updateOne]',
         error
       })
       throw new HttpException(
@@ -83,9 +82,9 @@ export class ProductsService {
 
   async remove(id: number): Promise<void> {
     await this.findOne(id)
-    await this.productsRepository.delete(id).catch((error) => {
+    await this.eventsRepository.delete(id).catch((error) => {
       this.logger.error({
-        location: '[Product > remove]',
+        location: '[Event > remove]',
         error
       })
       throw new HttpException(

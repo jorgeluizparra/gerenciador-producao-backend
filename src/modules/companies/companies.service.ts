@@ -73,7 +73,7 @@ export class CompaniesService {
   }
 
   async findOne(id: number): Promise<CompaniesEntity> {
-    let company = await this.companiesRepository.findOne(id, { relations: ['productCategories', 'users'] }).catch((error) => {
+    let company = await this.companiesRepository.findOne(id, { relations: ['productCategories', 'users', 'products', 'events'] }).catch((error) => {
       this.logger.error({
         location: '[Companies > findOne]',
         error

@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional, OmitType, PartialType } from "@nestjs/swagger";
-import { IsBoolean, IsDate, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString, Length } from "class-validator";
+import { IsBoolean, IsDate, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString, Length, Matches } from "class-validator";
 
 export class CreateCreditCardDto {
     
@@ -15,9 +15,12 @@ export class CreateCreditCardDto {
     @ApiProperty()
     securityCode: string;
   
-    @IsDateString()
+    @Matches(
+        /^([0-9]{4}-[0-9]{2})$/, 
+        { message: "Formato inválido. YYYY-MM" }
+    )
     @IsNotEmpty()
-    @ApiProperty({ format: "date" })
+    @ApiProperty()
     expirationDate: Date;
   
     @IsString()

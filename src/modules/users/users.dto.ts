@@ -1,20 +1,8 @@
 import { ApiProperty, PartialType, PickType } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
-import { IsNotEmpty, IsNumber, IsString, IsEmail,ValidatorConstraint, ValidatorConstraintInterface, Matches, Length, Validate } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString, IsEmail, Matches, Length, Validate } from "class-validator";
+import { ValidateAccountType } from "../../../src/utils/custom.validators";
 import { AccessType } from "./users.entity";
-
-const AcceptedAccountTypes: AccessType[] = ['admin', 'normal']
-
-@ValidatorConstraint({ name: 'accountType', async: false })
-export class ValidateAccountType implements ValidatorConstraintInterface {
-  validate(accountType) {
-    return AcceptedAccountTypes.includes(accountType.toLowerCase()) ? true : false
-  }
-
-  defaultMessage() {
-    return "Permissão inválida.";
-  }
-}
 
 export class CreateUserDto {
     @IsEmail()
@@ -25,7 +13,10 @@ export class CreateUserDto {
     @IsString()
     @IsNotEmpty()
     @Length(8)
-    @Matches(/(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])(?=.{8,})./, { message: 'Senha muito fraca.' })
+    @Matches(
+        /(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])(?=.{8,})./,
+        { message: 'Sua senha deve conter pelomenos 1 caracter maiúsculo, 1 minúsculo, 1 número e 1 caracter especial.' }
+    )
     @ApiProperty()
     password: string;
 

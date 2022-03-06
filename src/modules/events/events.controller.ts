@@ -1,67 +1,67 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ErrorMessageDto } from '../../utils/common.dto';
-import { CreateProductDto, UpdateProductDto } from './products.dto';
-import { ProductsEntity } from './products.entity';
-import { ProductsService } from './products.service';
+import { CreateEventDto, UpdateEventDto } from './events.dto';
+import { EventsEntity } from './events.entity';
+import { EventsService } from './events.service';
 
-@ApiTags('Products')
-@Controller('products')
-export class ProductsController {
-  constructor(private readonly productsService: ProductsService) {}
+@ApiTags('Events')
+@Controller('events')
+export class EventsController {
+  constructor(private readonly eventsService: EventsService) {}
 
   @Post()
   @ApiCreatedResponse({
-    description: 'Product created successfully',
-    type: ProductsEntity
+    description: 'Event created successfully',
+    type: EventsEntity
   })
   @ApiBadRequestResponse({
-    description: 'Product category id not found',
+    description: 'Event category id not found',
     type: ErrorMessageDto
   })
   @ApiInternalServerErrorResponse({
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
-  async create(@Body() body: CreateProductDto): Promise<ProductsEntity> {
-    return this.productsService.create(body)
+  async create(@Body() body: CreateEventDto): Promise<EventsEntity> {
+    return this.eventsService.create(body)
   }
 
   @Get()
   @ApiOkResponse({
-    description: 'Return all product that match with the query',
-    type: [ProductsEntity]
+    description: 'Return all event that match with the query',
+    type: [EventsEntity]
   })
   @ApiInternalServerErrorResponse({
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
   // @ApiQuery({ name: 'company', required: false })
-  async findAll(@Query() query: object): Promise<ProductsEntity[]> {
-    return this.productsService.findAll(query)
+  async findAll(@Query() query: object): Promise<EventsEntity[]> {
+    return this.eventsService.findAll(query)
   }
 
   @Get(':id')
   @ApiOkResponse({
-    description: 'Return the product data',
-    type: ProductsEntity
+    description: 'Return the event data',
+    type: EventsEntity
   })
   @ApiNotFoundResponse({
-    description: 'Product id not found',
+    description: 'Event id not found',
     type: ErrorMessageDto
   })
   @ApiInternalServerErrorResponse({
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
-  async findOne(@Param('id') id: number): Promise<ProductsEntity> {
-    return this.productsService.findOne(id)
+  async findOne(@Param('id') id: number): Promise<EventsEntity> {
+    return this.eventsService.findOne(id)
   }
 
   @Put(':id')
   @ApiOkResponse({
     description: 'Company data updated.',
-    type: ProductsEntity
+    type: EventsEntity
   })
   @ApiNotFoundResponse({
     description: 'Not found the id.',
@@ -71,15 +71,15 @@ export class ProductsController {
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
-  async updateOne(@Param('id') id: number, @Body() body: UpdateProductDto): Promise<ProductsEntity> {
-    return this.productsService.updateOne(id, body)
+  async updateOne(@Param('id') id: number, @Body() body: UpdateEventDto): Promise<EventsEntity> {
+    return this.eventsService.updateOne(id, body)
   }
 
   @ApiOkResponse({
-    description: 'Product deleted successfully'
+    description: 'Event deleted successfully'
   })
   @ApiNotFoundResponse({
-    description: 'Product id not found',
+    description: 'Event id not found',
     type: ErrorMessageDto
   })
   @ApiInternalServerErrorResponse({
@@ -88,6 +88,6 @@ export class ProductsController {
   })
   @Delete(':id')
   async remove(@Param('id') id: number): Promise<void> {
-    return this.productsService.remove(id)
+    return this.eventsService.remove(id)
   }
 }

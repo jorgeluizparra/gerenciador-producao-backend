@@ -12,22 +12,22 @@ export class CreateProductDto {
     @ApiProperty()
     description: string;
 
-    @IsNumber()
-    @IsNotEmpty()
-    @ApiProperty()
-    price: number;
-
     @IsOptional()
     @IsBoolean()
     @ApiPropertyOptional()
     isActive: boolean;
 
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty()
+    productCategory: string;
+
     @IsNumber()
     @IsNotEmpty()
     @ApiProperty()
-    productCategoryId: number;
+    companyId: number;
 }
 
 export class UpdateProductDto extends PartialType(
-    OmitType(CreateProductDto, [] as const),
+    OmitType(CreateProductDto, ['companyId'] as const),
 ) {}

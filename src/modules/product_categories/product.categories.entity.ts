@@ -13,23 +13,8 @@ export class ProductCategoriesEntity {
   @Column({ nullable: false })
   name: string;
 
-  @ApiProperty()
-  @Column({ default: true, nullable: false })
-  isActive: boolean;
-
-  @ApiProperty()
-  @Column({ default: false, nullable: false })
-  updatedBy: string;
-
-  @ApiProperty()
-  @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
-  updatedAt: Date;
-
   @ManyToOne(() => CompaniesEntity, company => company.productCategories)
   company?: CompaniesEntity;
   @Column({ nullable: false })
   companyId: number;
-
-  @OneToMany(() => ProductsEntity, product => product.productCategory)
-  products?: ProductsEntity[];
 }
