@@ -3,6 +3,7 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany, CreateDateColumn, Up
 import { EventsEntity } from '../events/events.entity';
 import { ProductsEntity } from '../products/products.entity';
 import { ProductCategoriesEntity } from '../product_categories/product.categories.entity';
+import { RestaurantsEntity } from '../restaurants/restaurants.entity';
 import { UsersEntity } from '../users/users.entity';
 
 @Entity('companies')
@@ -56,6 +57,9 @@ export class CompaniesEntity {
 
   @OneToMany(() => EventsEntity, event => event.company)
   events?: EventsEntity[];
+  
+  @OneToMany(() => RestaurantsEntity, restaurant => restaurant.company)
+  restaurants?: RestaurantsEntity[];
 
   @OneToMany(() => UsersEntity, user => user.company)
   users?: UsersEntity[];
