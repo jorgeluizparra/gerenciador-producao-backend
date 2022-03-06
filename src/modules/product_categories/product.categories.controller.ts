@@ -56,8 +56,8 @@ export class ProductCategoriesController {
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
-  async findOne(@Param('id') id: number): Promise<ProductCategoriesEntity> {
-    return this.productCategoriesService.findOne(id)
+  async findOne(@Param('id') id: number, @Query('relations') relations: string ): Promise<ProductCategoriesEntity> {
+    return this.productCategoriesService.findOne(id, relations.split(','))
   }
 
   // @Put(':id')

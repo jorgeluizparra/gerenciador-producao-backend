@@ -72,8 +72,8 @@ export class CompaniesService {
     });
   }
 
-  async findOne(id: number): Promise<CompaniesEntity> {
-    let company = await this.companiesRepository.findOne(id, { relations: ['productCategories', 'users', 'products', 'events'] }).catch((error) => {
+  async findOne(id: number, relations: string[]): Promise<CompaniesEntity> {
+    let company = await this.companiesRepository.findOne(id, { relations }).catch((error) => {
       this.logger.error({
         location: '[Companies > findOne]',
         error
@@ -94,7 +94,7 @@ export class CompaniesService {
   }
 
   async updateOne(id: number, body: UpdateCompanyDto): Promise<CompaniesEntity> {
-    await this.findOne(id);
+    await this.findOne(id, []);
     await this.companiesRepository.update({ id }, body).catch(error => {
       this.logger.error({
         location: '[Companies > updateOne]',
@@ -105,7 +105,7 @@ export class CompaniesService {
         HttpStatus.INTERNAL_SERVER_ERROR
       )
     });
-    return this.findOne(id);
+    return this.findOne(id, []);
   }
 
   // async remove(id: string): Promise<void> {

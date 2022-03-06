@@ -54,8 +54,8 @@ export class RestaurantsController {
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
-  async findOne(@Param('id') id: number): Promise<RestaurantsEntity> {
-    return this.restaurantsService.findOne(id)
+  async findOne(@Param('id') id: number, @Query('relations') relations: string ): Promise<RestaurantsEntity> {
+    return this.restaurantsService.findOne(id, relations.split(','))
   }
 
   @Put(':id')

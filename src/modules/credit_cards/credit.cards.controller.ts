@@ -56,8 +56,8 @@ export class CreditCardsController {
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
-  async findOne(@Param('id') id: number): Promise<CreditCardsEntity> {
-    return this.creditCardsService.findOne(id)
+  async findOne(@Param('id') id: number, @Query('relations') relations: string ): Promise<CreditCardsEntity> {
+    return this.creditCardsService.findOne(id, relations.split(','))
   }
 
   // @Put(':id')

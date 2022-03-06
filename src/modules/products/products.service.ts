@@ -19,7 +19,7 @@ export class ProductsService {
 
   async create (body: CreateProductDto): Promise<ProductsEntity> {
     let product = this.productsRepository.create(body)
-    product.company = await this.companiesService.findOne(body.companyId);
+    product.company = await this.companiesService.findOne(body.companyId, ['products']);
     return this.productsRepository.save(product).catch((error) => {
       this.logger.error({
         location: '[Products > create]',
@@ -45,8 +45,8 @@ export class ProductsService {
     });
   }
 
-  async findOne(id: number): Promise<ProductsEntity> {
-    let product = await this.productsRepository.findOne(id, { relations: [] }).catch((error) => {
+  async findOne(id: number, relations: string[]): Promise<ProductsEntity> {
+    let product = await this.productsRepository.findOne(id, { relations }).catch((error) => {
       this.logger.error({
         location: '[Product > findOne]',
         error
@@ -67,7 +67,7 @@ export class ProductsService {
   }
 
   async updateOne(id: number, body: UpdateProductDto): Promise<ProductsEntity> {
-    await this.findOne(id);
+    await this.findOne(id, []);
     await this.productsRepository.update({ id }, body).catch((error) => {
       this.logger.error({
         location: '[Product > updateOne]',
@@ -78,11 +78,11 @@ export class ProductsService {
         HttpStatus.INTERNAL_SERVER_ERROR
       )
     });
-    return this.findOne(id);
+    return this.findOne(id, []);
   }
 
   async remove(id: number): Promise<void> {
-    await this.findOne(id)
+    await this.findOne(id, [])
     await this.productsRepository.delete(id).catch((error) => {
       this.logger.error({
         location: '[Product > remove]',

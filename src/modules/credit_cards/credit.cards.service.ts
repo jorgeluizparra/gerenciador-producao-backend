@@ -17,7 +17,7 @@ export class CreditCardsService {
 
   async create (body: CreateCreditCardDto): Promise<CreditCardsEntity> {
     let creditCard = this.creditCardsRepository.create(body);
-    let client = await this.clientsService.findOne(body.clientId);
+    let client = await this.clientsService.findOne(body.clientId, ['creditCards']);
     creditCard.client = client
     return this.creditCardsRepository.save(creditCard).catch((error) => {
       this.logger.error({
@@ -44,8 +44,8 @@ export class CreditCardsService {
     });
   }
 
-  async findOne(id: number): Promise<CreditCardsEntity> {
-    let creditCard = await this.creditCardsRepository.findOne(id, { relations: [] }).catch((error) => {
+  async findOne(id: number, relations: string[]): Promise<CreditCardsEntity> {
+    let creditCard = await this.creditCardsRepository.findOne(id, { relations }).catch((error) => {
       this.logger.error({
         location: '[Creadit Cards > findOne]',
         error
@@ -66,7 +66,7 @@ export class CreditCardsService {
   }
 
   async updateOne(id: number, body: UpdateCreditCardDto): Promise<CreditCardsEntity> {
-    await this.findOne(id);
+    await this.findOne(id, []);
     await this.creditCardsRepository.update({ id }, body).catch(error => {
       this.logger.error({
         location: '[Credit cards > updateOne]',
@@ -77,11 +77,11 @@ export class CreditCardsService {
         HttpStatus.INTERNAL_SERVER_ERROR
       )
     });
-    return this.findOne(id);
+    return this.findOne(id, []);
   }
 
   async remove(id: number): Promise<void> {
-    await this.findOne(id)
+    await this.findOne(id, [])
     await this.creditCardsRepository.delete(id).catch((error) => {
       this.logger.error({
         location: '[Creadit Cards > remove]',

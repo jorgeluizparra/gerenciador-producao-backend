@@ -18,7 +18,7 @@ export class EventsService {
 
   async create (body: CreateEventDto): Promise<EventsEntity> {
     let event = this.eventsRepository.create(body)
-    event.company = await this.companiesService.findOne(body.companyId);
+    event.company = await this.companiesService.findOne(body.companyId, ['events']);
     return this.eventsRepository.save(event).catch((error) => {
       this.logger.error({
         location: '[Events > create]',
@@ -44,8 +44,8 @@ export class EventsService {
     });
   }
 
-  async findOne(id: number): Promise<EventsEntity> {
-    let event = await this.eventsRepository.findOne(id, { relations: [] }).catch((error) => {
+  async findOne(id: number, relations: string[]): Promise<EventsEntity> {
+    let event = await this.eventsRepository.findOne(id, { relations }).catch((error) => {
       this.logger.error({
         location: '[Event > findOne]',
         error
@@ -66,7 +66,7 @@ export class EventsService {
   }
 
   async updateOne(id: number, body: UpdateEventDto): Promise<EventsEntity> {
-    await this.findOne(id);
+    await this.findOne(id, []);
     await this.eventsRepository.update({ id }, body).catch((error) => {
       this.logger.error({
         location: '[Event > updateOne]',
@@ -77,11 +77,11 @@ export class EventsService {
         HttpStatus.INTERNAL_SERVER_ERROR
       )
     });
-    return this.findOne(id);
+    return this.findOne(id, []);
   }
 
   async remove(id: number): Promise<void> {
-    await this.findOne(id)
+    await this.findOne(id, [])
     await this.eventsRepository.delete(id).catch((error) => {
       this.logger.error({
         location: '[Event > remove]',

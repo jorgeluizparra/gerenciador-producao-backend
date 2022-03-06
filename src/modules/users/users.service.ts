@@ -33,7 +33,7 @@ export class UsersService {
     let user = this.usersRepository.create(body)
     let salt = await bcrypt.genSalt();
     user.password = await bcrypt.hash(user.password, salt)
-    user.company = await this.companiesService.findOne(body.companyId)
+    user.company = await this.companiesService.findOne(body.companyId, ['users'])
     return this.usersRepository.save(user).catch((error) => {
       this.logger.error({
         location: '[Users > create]',
@@ -59,8 +59,8 @@ export class UsersService {
     });
   }
 
-  async findOne(id: number): Promise<UsersEntity> {
-    let user = await this.usersRepository.findOne(id, { relations: [] }).catch((error) => {
+  async findOne(id: number, relations: string[]): Promise<UsersEntity> {
+    let user = await this.usersRepository.findOne(id, { relations }).catch((error) => {
       this.logger.error({
         location: '[Users > findOne]',
         error
@@ -81,7 +81,7 @@ export class UsersService {
   }
 
   async updateOne(id: number, body: UpdateUserDto): Promise<UsersEntity> {
-    await this.findOne(id);
+    await this.findOne(id, []);
     await this.usersRepository.update({ id }, body).catch(error => {
       this.logger.error({
         location: '[Users > updateOne]',
@@ -92,11 +92,11 @@ export class UsersService {
         HttpStatus.INTERNAL_SERVER_ERROR
       )
     });
-    return this.findOne(id);
+    return this.findOne(id, []);
   }
 
   async remove(id: number): Promise<void> {
-    await this.findOne(id);
+    await this.findOne(id, []);
     await this.usersRepository.delete(id);
   }
 

@@ -53,8 +53,8 @@ export class ClientsController {
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
-  async findOne(@Param('id') id: number): Promise<ClientsEntity> {
-    return this.clientsService.findOne(id)
+  async findOne(@Param('id') id: number, @Query('relations') relations: string ): Promise<ClientsEntity> {
+    return this.clientsService.findOne(id, relations.split(','))
   }
 
   // @Put(':id')

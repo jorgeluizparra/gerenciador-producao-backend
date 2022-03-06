@@ -49,8 +49,8 @@ export class CompaniesController {
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
-  async findOne(@Param('id') id: number): Promise<CompaniesEntity> {
-    return this.companiesService.findOne(id)
+  async findOne(@Param('id') id: number, @Query('relations') relations: string ): Promise<CompaniesEntity> {
+    return this.companiesService.findOne(id, relations.split(','))
   }
 
   @Put(':id')

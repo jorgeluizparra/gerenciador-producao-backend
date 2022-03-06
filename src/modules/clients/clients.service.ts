@@ -64,8 +64,8 @@ export class ClientsService {
     });
   }
 
-  async findOne(id: number): Promise<ClientsEntity> {
-    let client = await this.clientsRepository.findOne(id, { relations: ['creditCards'] }).catch((error) => {
+  async findOne(id: number, relations: string[]): Promise<ClientsEntity> {
+    let client = await this.clientsRepository.findOne(id, { relations }).catch((error) => {
       this.logger.error({
         location: '[Clients > findOne]',
         error
@@ -86,7 +86,7 @@ export class ClientsService {
   }
 
   async updateOne(id: number, body: UpdateClientDto): Promise<ClientsEntity> {
-    await this.findOne(id);
+    await this.findOne(id, []);
     await this.clientsRepository.update({ id }, body).catch(error => {
       this.logger.error({
         location: '[Clients > updateOne]',
@@ -97,11 +97,11 @@ export class ClientsService {
         HttpStatus.INTERNAL_SERVER_ERROR
       )
     });
-    return this.findOne(id);
+    return this.findOne(id, []);
   }
 
   async remove(id: number): Promise<void> {
-    await this.findOne(id);
+    await this.findOne(id, []);
     await this.clientsRepository.delete(id);
   }
 

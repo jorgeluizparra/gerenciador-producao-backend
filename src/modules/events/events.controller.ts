@@ -54,8 +54,8 @@ export class EventsController {
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
-  async findOne(@Param('id') id: number): Promise<EventsEntity> {
-    return this.eventsService.findOne(id)
+  async findOne(@Param('id') id: number, @Query('relations') relations: string ): Promise<EventsEntity> {
+    return this.eventsService.findOne(id, relations.split(','))
   }
 
   @Put(':id')

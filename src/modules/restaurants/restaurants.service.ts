@@ -17,7 +17,7 @@ export class RestaurantsService {
 
   async create (body: CreateRestaurantDto): Promise<RestaurantsEntity> {
     let restaurant = this.restaurantsRepository.create(body)
-    restaurant.company = await this.companiesService.findOne(body.companyId);
+    restaurant.company = await this.companiesService.findOne(body.companyId, ['restaurants']);
     return this.restaurantsRepository.save(restaurant).catch((error) => {
       this.logger.error({
         location: '[Restaurants > create]',
@@ -43,8 +43,8 @@ export class RestaurantsService {
     });
   }
 
-  async findOne(id: number): Promise<RestaurantsEntity> {
-    let restaurant = await this.restaurantsRepository.findOne(id, { relations: [] }).catch((error) => {
+  async findOne(id: number, relations: string[]): Promise<RestaurantsEntity> {
+    let restaurant = await this.restaurantsRepository.findOne(id, { relations }).catch((error) => {
       this.logger.error({
         location: '[Restaurant > findOne]',
         error
@@ -65,7 +65,7 @@ export class RestaurantsService {
   }
 
   async updateOne(id: number, body: UpdateRestaurantDto): Promise<RestaurantsEntity> {
-    await this.findOne(id);
+    await this.findOne(id, []);
     await this.restaurantsRepository.update({ id }, body).catch((error) => {
       this.logger.error({
         location: '[Restaurant > updateOne]',
@@ -76,11 +76,11 @@ export class RestaurantsService {
         HttpStatus.INTERNAL_SERVER_ERROR
       )
     });
-    return this.findOne(id);
+    return this.findOne(id, []);
   }
 
   async remove(id: number): Promise<void> {
-    await this.findOne(id)
+    await this.findOne(id, [])
     await this.restaurantsRepository.delete(id).catch((error) => {
       this.logger.error({
         location: '[Restaurant > remove]',
