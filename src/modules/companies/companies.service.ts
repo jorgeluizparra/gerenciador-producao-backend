@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SintegraService } from '../sintegra/sintegra.service';
-import { CreateCompanyDto, UpdateCompanyDto } from './companies.dto';
+import { CreateCompanyDto, FindAllCompaniesQueryDto, UpdateCompanyDto } from './companies.dto';
 import { CompaniesEntity } from './companies.entity';
 
 @Injectable()
@@ -57,7 +57,7 @@ export class CompaniesService {
     });
   }
 
-  findAll(query: object): Promise<CompaniesEntity[]> {
+  findAll(query: FindAllCompaniesQueryDto|FindAllCompaniesQueryDto[]): Promise<CompaniesEntity[]> {
     return this.companiesRepository.find({
       where: query
     }).catch((error) => {

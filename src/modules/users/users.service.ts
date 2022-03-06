@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CompaniesService } from '../companies/companies.service';
-import { CreateUserDto, UpdateUserDto } from './users.dto';
+import { CreateUserDto, FindAllUsersQueryDto, UpdateUserDto } from './users.dto';
 import { UsersEntity } from './users.entity';
 import * as bcrypt from 'bcrypt';
 
@@ -46,7 +46,7 @@ export class UsersService {
     });
   }
 
-  findAll(query): Promise<UsersEntity[]> {
+  findAll(query: FindAllUsersQueryDto|FindAllUsersQueryDto[]): Promise<UsersEntity[]> {
     return this.usersRepository.find({ where: query}).catch((error) => {
       this.logger.error({
         location: '[Users > findAll]',

@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ErrorMessageDto } from '../../utils/common.dto';
-import { CreateProductDto, UpdateProductDto } from './products.dto';
+import { CreateProductDto, FindAllProductsQueryDto, UpdateProductDto } from './products.dto';
 import { ProductsEntity } from './products.entity';
 import { ProductsService } from './products.service';
 
@@ -36,8 +36,7 @@ export class ProductsController {
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
-  // @ApiQuery({ name: 'company', required: false })
-  async findAll(@Query() query: object): Promise<ProductsEntity[]> {
+  async findAll(@Query() query: FindAllProductsQueryDto): Promise<ProductsEntity[]> {
     return this.productsService.findAll(query)
   }
 

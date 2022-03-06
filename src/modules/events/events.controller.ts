@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ErrorMessageDto } from '../../utils/common.dto';
-import { CreateEventDto, UpdateEventDto } from './events.dto';
+import { CreateEventDto, FindAllEventsQueryDto, UpdateEventDto } from './events.dto';
 import { EventsEntity } from './events.entity';
 import { EventsService } from './events.service';
 
@@ -36,8 +36,7 @@ export class EventsController {
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
-  // @ApiQuery({ name: 'company', required: false })
-  async findAll(@Query() query: object): Promise<EventsEntity[]> {
+  async findAll(@Query() query: FindAllEventsQueryDto): Promise<EventsEntity[]> {
     return this.eventsService.findAll(query)
   }
 

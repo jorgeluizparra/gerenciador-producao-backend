@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CompaniesService } from '../companies/companies.service';
-import { CreateRestaurantDto, UpdateRestaurantDto } from './restaurants.dto';
+import { CreateRestaurantDto, FindAllRestaurantsQueryDto, UpdateRestaurantDto } from './restaurants.dto';
 import { RestaurantsEntity } from './restaurants.entity';
 
 @Injectable()
@@ -30,7 +30,7 @@ export class RestaurantsService {
     });
   }
 
-  findAll(query): Promise<RestaurantsEntity[]> {
+  findAll(query: FindAllRestaurantsQueryDto|FindAllRestaurantsQueryDto[]): Promise<RestaurantsEntity[]> {
     return this.restaurantsRepository.find({ where: query }).catch((error) => {
       this.logger.error({
         location: '[Restaurants > findAll]',

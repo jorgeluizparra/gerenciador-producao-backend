@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { CompaniesService } from '../companies/companies.service';
 import { ProductCategoriesService } from '../product_categories/product.categories.service';
 import { SintegraService } from '../sintegra/sintegra.service';
-import { CreateProductDto, UpdateProductDto } from './products.dto';
+import { CreateProductDto, FindAllProductsQueryDto, UpdateProductDto } from './products.dto';
 import { ProductsEntity } from './products.entity';
 
 @Injectable()
@@ -32,7 +32,7 @@ export class ProductsService {
     });
   }
 
-  findAll(query): Promise<ProductsEntity[]> {
+  findAll(query: FindAllProductsQueryDto|FindAllProductsQueryDto[]): Promise<ProductsEntity[]> {
     return this.productsRepository.find({ where: query }).catch((error) => {
       this.logger.error({
         location: '[Products > findAll]',

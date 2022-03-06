@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ClientsService } from '../clients/clients.service';
-import { CreateCreditCardDto, UpdateCreditCardDto } from './credit.cards.dto';
+import { CreateCreditCardDto, FindAllCreditCardsQueryDto, UpdateCreditCardDto } from './credit.cards.dto';
 import { CreditCardsEntity } from './credit.cards.entity';
 
 @Injectable()
@@ -31,7 +31,7 @@ export class CreditCardsService {
     });
   }
 
-  findAll(query: object): Promise<CreditCardsEntity[]> {
+  findAll(query: FindAllCreditCardsQueryDto|FindAllCreditCardsQueryDto[]): Promise<CreditCardsEntity[]> {
     return this.creditCardsRepository.find({ where: query}).catch((error) => {
       this.logger.error({
         location: '[Credit cards > findAll]',

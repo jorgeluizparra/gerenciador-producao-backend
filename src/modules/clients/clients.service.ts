@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateClientDto, UpdateClientDto } from './clients.dto';
+import { CreateClientDto, FindAllClientsQueryDto, UpdateClientDto } from './clients.dto';
 import { ClientsEntity } from './clients.entity';
 import * as bcrypt from 'bcrypt';
 
@@ -51,7 +51,7 @@ export class ClientsService {
     });
   }
 
-  findAll(query: object): Promise<ClientsEntity[]> {
+  findAll(query: FindAllClientsQueryDto|FindAllClientsQueryDto[]): Promise<ClientsEntity[]> {
     return this.clientsRepository.find({ where: query}).catch((error) => {
       this.logger.error({
         location: '[Clients > findAll]',

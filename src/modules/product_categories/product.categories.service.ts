@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CompaniesService } from '../companies/companies.service';
-import { CreateProductCategoryDto, UpdateProductCategoryDto } from './product.categories.dto';
+import { CreateProductCategoryDto, FindAllProductCategoriesQueryDto, UpdateProductCategoryDto } from './product.categories.dto';
 import { ProductCategoriesEntity } from './product.categories.entity';
 
 @Injectable()
@@ -31,7 +31,7 @@ export class ProductCategoriesService {
     });
   }
 
-  findAll(query): Promise<ProductCategoriesEntity[]> {
+  findAll(query: FindAllProductCategoriesQueryDto|FindAllProductCategoriesQueryDto[]): Promise<ProductCategoriesEntity[]> {
     return this.productCategoriesRepository.find({ where: query}).catch((error) => {
       this.logger.error({
         location: '[Product Categories > findAll]',

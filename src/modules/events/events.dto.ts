@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional, OmitType, PartialType } from "@nestjs/swagger";
 import { IsBoolean, IsDate, IsNotEmpty, IsNumber, IsOptional, IsString, Matches } from "class-validator";
+import { EventsEntity } from "./events.entity";
 
 
 export class CreateEventDto {
@@ -48,3 +49,5 @@ export class CreateEventDto {
 export class UpdateEventDto extends PartialType(
     OmitType(CreateEventDto, ['companyId'] as const),
 ) {}
+
+export class FindAllEventsQueryDto extends PartialType(EventsEntity){}

@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ErrorMessageDto } from '../../utils/common.dto';
-import { CreateCreditCardDto, UpdateCreditCardDto } from './credit.cards.dto';
+import { CreateCreditCardDto, FindAllCreditCardsQueryDto, UpdateCreditCardDto } from './credit.cards.dto';
 import { CreditCardsEntity } from './credit.cards.entity';
 import { CreditCardsService } from './credit.cards.service';
 
@@ -36,8 +36,7 @@ export class CreditCardsController {
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
-  // @ApiQuery({ name: 'company', required: false })
-  async findAll(@Query() query: object): Promise<CreditCardsEntity[]> {
+  async findAll(@Query() query: FindAllCreditCardsQueryDto): Promise<CreditCardsEntity[]> {
     console.log(query);
     
     return this.creditCardsService.findAll(query)

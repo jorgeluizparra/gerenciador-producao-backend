@@ -1,19 +1,19 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ErrorMessageDto } from '../../utils/common.dto';
-import { CreateProductCategoryDto, FindAllProductCategoriesQueryDto, UpdateProductCategoryDto } from './product.categories.dto';
-import { ProductCategoriesEntity } from './product.categories.entity';
-import { ProductCategoriesService } from './product.categories.service';
+import { CreateOpeningHourDto, FindAllOpeningHoursQueryDto, UpdateOpeningHourDto } from './opening.hours.dto';
+import { OpeningHoursEntity } from './opening.hours.entity';
+import { OpeningHoursService } from './opening.hours.service';
 
-@ApiTags('Product Categories')
-@Controller('product-categories')
-export class ProductCategoriesController {
-  constructor(private readonly productCategoriesService: ProductCategoriesService) {}
+@ApiTags('Opening Hours')
+@Controller('opening-hours')
+export class OpeningHoursController {
+  constructor(private readonly openingHoursService: OpeningHoursService) {}
 
   @Post()
   @ApiCreatedResponse({
       description: 'Product category created successfully',
-      type: ProductCategoriesEntity
+      type: OpeningHoursEntity
   })
   @ApiBadRequestResponse({
     description: 'Company id not found',
@@ -23,29 +23,27 @@ export class ProductCategoriesController {
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
-  async create(@Body() body: CreateProductCategoryDto): Promise<ProductCategoriesEntity> {
-    return this.productCategoriesService.create(body)
+  async create(@Body() body: CreateOpeningHourDto): Promise<OpeningHoursEntity> {
+    return this.openingHoursService.create(body)
   }
 
   @Get()
   @ApiOkResponse({
     description: 'Return all product categories that match with the query',
-    type: [ProductCategoriesEntity]
+    type: [OpeningHoursEntity]
   })
   @ApiInternalServerErrorResponse({
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
-  async findAll(@Query() query: FindAllProductCategoriesQueryDto): Promise<ProductCategoriesEntity[]> {
-    console.log(query);
-    
-    return this.productCategoriesService.findAll(query)
+  async findAll(@Query() query: FindAllOpeningHoursQueryDto): Promise<OpeningHoursEntity[]> {
+    return this.openingHoursService.findAll(query)
   }
 
   @Get(':id')
   @ApiOkResponse({
     description: 'Return the product category data',
-    type: ProductCategoriesEntity
+    type: OpeningHoursEntity
   })
   @ApiNotFoundResponse({
     description: 'Product category id not found',
@@ -55,14 +53,14 @@ export class ProductCategoriesController {
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
-  async findOne(@Param('id') id: number, @Query('relations') relations: string ): Promise<ProductCategoriesEntity> {
-    return this.productCategoriesService.findOne(id, relations ? relations.split(',') : [])
+  async findOne(@Param('id') id: number, @Query('relations') relations: string ): Promise<OpeningHoursEntity> {
+    return this.openingHoursService.findOne(id, relations ? relations.split(',') : [])
   }
 
   // @Put(':id')
   // @ApiOkResponse({
   //   description: 'Product category data updated.',
-  //   type: ProductCategoriesEntity
+  //   type: OpeningHoursEntity
   // })
   // @ApiNotFoundResponse({
   //   description: 'Not found the id.',
@@ -72,8 +70,8 @@ export class ProductCategoriesController {
   //   description: 'Error consulting the database',
   //   type: ErrorMessageDto
   // })
-  // async updateOne(@Param('id') id: number, @Body() body: UpdateProductCategoryDto): Promise<ProductCategoriesEntity> {
-  //   return this.productCategoriesService.updateOne(id, body)
+  // async updateOne(@Param('id') id: number, @Body() body: UpdateOpeningHourDto): Promise<OpeningHoursEntity> {
+  //   return this.openingHoursService.updateOne(id, body)
   // }
 
   @ApiOkResponse({
@@ -89,6 +87,6 @@ export class ProductCategoriesController {
   })
   @Delete(':id')
   async remove(@Param('id') id: number): Promise<void> {
-    return this.productCategoriesService.remove(id)
+    return this.openingHoursService.remove(id)
   }
 }

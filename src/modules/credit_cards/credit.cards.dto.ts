@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional, OmitType, PartialType } from "@nestjs/swagger";
 import { IsBoolean, IsDate, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString, Length, Matches } from "class-validator";
+import { CreditCardsEntity } from "./credit.cards.entity";
 
 export class CreateCreditCardDto {
     
@@ -48,3 +49,5 @@ export class CreateCreditCardDto {
 export class UpdateCreditCardDto extends PartialType(
     OmitType(CreateCreditCardDto, [] as const),
 ) {}
+
+export class FindAllCreditCardsQueryDto extends PartialType(CreditCardsEntity){}

@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional, OmitType, PartialType } from "@nestjs/swagger";
 import { IsBoolean, IsNotEmpty, IsOptional, IsString, Length } from "class-validator";
+import { CompaniesEntity } from "./companies.entity";
 
 export class CreateCompanyDto {
     
@@ -18,3 +19,5 @@ export class CreateCompanyDto {
 export class UpdateCompanyDto extends PartialType(
     OmitType(CreateCompanyDto, ['cnpj'] as const),
 ) {}
+
+export class FindAllCompaniesQueryDto extends PartialType(CompaniesEntity){}

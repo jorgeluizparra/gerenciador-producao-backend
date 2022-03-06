@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CompaniesService } from '../companies/companies.service';
 import { SintegraService } from '../sintegra/sintegra.service';
-import { CreateEventDto, UpdateEventDto } from './events.dto';
+import { CreateEventDto, FindAllEventsQueryDto, UpdateEventDto } from './events.dto';
 import { EventsEntity } from './events.entity';
 
 @Injectable()
@@ -31,7 +31,7 @@ export class EventsService {
     });
   }
 
-  findAll(query): Promise<EventsEntity[]> {
+  findAll(query: FindAllEventsQueryDto|FindAllEventsQueryDto[]): Promise<EventsEntity[]> {
     return this.eventsRepository.find({ where: query }).catch((error) => {
       this.logger.error({
         location: '[Events > findAll]',

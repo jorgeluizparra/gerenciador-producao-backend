@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional, OmitType, PartialType } from "@nestjs/swagger";
 import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, Length } from "class-validator";
+import { ProductsEntity } from "./products.entity";
 
 export class CreateProductDto {
     @IsString()
@@ -31,3 +32,5 @@ export class CreateProductDto {
 export class UpdateProductDto extends PartialType(
     OmitType(CreateProductDto, ['companyId'] as const),
 ) {}
+
+export class FindAllProductsQueryDto extends PartialType(ProductsEntity){}

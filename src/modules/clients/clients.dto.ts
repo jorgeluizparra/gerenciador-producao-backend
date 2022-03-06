@@ -1,10 +1,11 @@
 import { ApiProperty, ApiPropertyOptional, OmitType, PartialType, PickType } from "@nestjs/swagger";
 import { IsBoolean, IsNotEmpty, IsOptional, IsString, Length, IsEmail, MinLength, Matches } from "class-validator";
+import { ClientsEntity } from "./clients.entity";
 
 export class CreateClientDto {
     @IsEmail()
     @IsNotEmpty()
-    @ApiProperty()
+    @ApiProperty({ format: "email" })
     email: string;
 
     @IsString()
@@ -32,3 +33,5 @@ export class UpdateClientDto extends PartialType(
 ) {}
 
 export class UpdateClientPasswordDto extends PickType(CreateClientDto, ['password'] as const) {}
+
+export class FindAllClientsQueryDto extends PartialType(ClientsEntity){}

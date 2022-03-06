@@ -1,13 +1,13 @@
 import { ApiProperty, PartialType, PickType } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
 import { IsNotEmpty, IsNumber, IsString, IsEmail, Matches, Length, Validate } from "class-validator";
-import { ValidateAccountType } from "../../../src/utils/custom.validators";
-import { AccessType } from "./users.entity";
+import { AcceptedAccountTypes, ValidateAccountType } from "../../../src/utils/custom.validators";
+import { AccessType, UsersEntity } from "./users.entity";
 
 export class CreateUserDto {
     @IsEmail()
     @IsNotEmpty()
-    @ApiProperty()
+    @ApiProperty({ format: "email" })
     email: string;
 
     @IsString()
@@ -30,7 +30,7 @@ export class CreateUserDto {
     @Validate(ValidateAccountType)
     @Transform(({ value }) => value.toLowerCase())
     @IsNotEmpty()
-    @ApiProperty()
+    @ApiProperty({ enum: AcceptedAccountTypes })
     accessType: AccessType;
 
     @IsNumber()
@@ -46,3 +46,5 @@ export class UpdateUserDto extends PartialType(
 export class UpdateUserAccountTypeDto extends PickType(CreateUserDto, ['accessType'] as const) {}
 
 export class UpdateUserPasswordDto extends PickType(CreateUserDto, ['password'] as const) {}
+
+export class FindAllUsersQueryDto extends PartialType(UsersEntity){}
