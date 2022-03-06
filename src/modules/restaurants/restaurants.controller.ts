@@ -55,7 +55,7 @@ export class RestaurantsController {
     type: ErrorMessageDto
   })
   async findOne(@Param('id') id: number, @Query('relations') relations: string ): Promise<RestaurantsEntity> {
-    return this.restaurantsService.findOne(id, relations.split(','))
+    return this.restaurantsService.findOne(id, relations ? relations.split(',') : [])
   }
 
   @Put(':id')

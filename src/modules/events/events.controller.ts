@@ -55,7 +55,7 @@ export class EventsController {
     type: ErrorMessageDto
   })
   async findOne(@Param('id') id: number, @Query('relations') relations: string ): Promise<EventsEntity> {
-    return this.eventsService.findOne(id, relations.split(','))
+    return this.eventsService.findOne(id, relations ? relations.split(',') : [])
   }
 
   @Put(':id')

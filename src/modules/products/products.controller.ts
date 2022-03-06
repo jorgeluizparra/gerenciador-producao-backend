@@ -55,7 +55,7 @@ export class ProductsController {
     type: ErrorMessageDto
   })
   async findOne(@Param('id') id: number, @Query('relations') relations: string ): Promise<ProductsEntity> {
-    return this.productsService.findOne(id, relations.split(','))
+    return this.productsService.findOne(id, relations ? relations.split(',') : [])
   }
 
   @Put(':id')

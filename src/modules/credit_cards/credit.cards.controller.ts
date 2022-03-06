@@ -57,7 +57,7 @@ export class CreditCardsController {
     type: ErrorMessageDto
   })
   async findOne(@Param('id') id: number, @Query('relations') relations: string ): Promise<CreditCardsEntity> {
-    return this.creditCardsService.findOne(id, relations.split(','))
+    return this.creditCardsService.findOne(id, relations ? relations.split(',') : [])
   }
 
   // @Put(':id')
