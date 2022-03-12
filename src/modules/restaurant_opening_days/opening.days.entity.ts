@@ -7,7 +7,7 @@ export type DaysFormat =
   |'sexta-feira'|'sabado-feira'|'domingo-feira'|'feriados'
 
 
-@Entity('opening_days')
+@Entity('restaurant_opening_days')
 export class OpeningDaysEntity {
   @ApiProperty()
   @PrimaryGeneratedColumn()
