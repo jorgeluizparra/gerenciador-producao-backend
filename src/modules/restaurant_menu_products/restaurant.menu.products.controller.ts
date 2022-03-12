@@ -1,19 +1,19 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ErrorMessageDto } from '../../utils/common.dto';
-import { CreateMenuProductDto, FindAllMenuProductsQueryDto, UpdateMenuProductDto } from './menu.products.dto';
-import { MenuProductsEntity } from './menu.products.entity';
-import { MenuProductsService } from './menu.products.service';
+import { CreateRestaurantMenusProductDto, FindAllRestaurantMenusProductsQueryDto, UpdateRestaurantMenusProductDto } from './restaurant.menu.products.dto';
+import { RestaurantMenusProductsEntity } from './restaurant.menu.products.entity';
+import { RestaurantMenusProductsService } from './restaurant.menu.products.service';
 
-@ApiTags('Menu Products')
-@Controller('menu-products')
-export class MenuProductsController {
-  constructor(private readonly menuProductsService: MenuProductsService) {}
+@ApiTags('Restaurant Menu Products')
+@Controller('restaurants/menu-products')
+export class RestaurantMenusProductsController {
+  constructor(private readonly restaurantMenusProductsService: RestaurantMenusProductsService) {}
 
   @Post()
   @ApiCreatedResponse({
       description: 'Menu Product created successfully',
-      type: MenuProductsEntity
+      type: RestaurantMenusProductsEntity
   })
   @ApiBadRequestResponse({
     description: 'Restaurant id not found',
@@ -23,27 +23,27 @@ export class MenuProductsController {
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
-  async create(@Body() body: CreateMenuProductDto): Promise<MenuProductsEntity> {
-    return this.menuProductsService.create(body)
+  async create(@Body() body: CreateRestaurantMenusProductDto): Promise<RestaurantMenusProductsEntity> {
+    return this.restaurantMenusProductsService.create(body)
   }
 
   @Get()
   @ApiOkResponse({
     description: 'Return all menus that match with the query',
-    type: [MenuProductsEntity]
+    type: [RestaurantMenusProductsEntity]
   })
   @ApiInternalServerErrorResponse({
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
-  async findAll(@Query() query: FindAllMenuProductsQueryDto): Promise<MenuProductsEntity[]> {
-    return this.menuProductsService.findAll(query)
+  async findAll(@Query() query: FindAllRestaurantMenusProductsQueryDto): Promise<RestaurantMenusProductsEntity[]> {
+    return this.restaurantMenusProductsService.findAll(query)
   }
 
   @Get(':id')
   @ApiOkResponse({
     description: 'Return the Menu Product data',
-    type: MenuProductsEntity
+    type: RestaurantMenusProductsEntity
   })
   @ApiNotFoundResponse({
     description: 'Menu Product id not found',
@@ -57,14 +57,14 @@ export class MenuProductsController {
     name: 'relations',
     required: false
   })
-  async findOne(@Param('id') id: number, @Query('relations') relations: string ): Promise<MenuProductsEntity> {
-    return this.menuProductsService.findOne(id, relations ? relations.split(',') : [])
+  async findOne(@Param('id') id: number, @Query('relations') relations: string ): Promise<RestaurantMenusProductsEntity> {
+    return this.restaurantMenusProductsService.findOne(id, relations ? relations.split(',') : [])
   }
 
   @Put(':id')
   @ApiOkResponse({
     description: 'Opening date data updated.',
-    type: MenuProductsEntity
+    type: RestaurantMenusProductsEntity
   })
   @ApiNotFoundResponse({
     description: 'Not found the id.',
@@ -74,8 +74,8 @@ export class MenuProductsController {
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
-  async updateOne(@Param('id') id: number, @Body() body: UpdateMenuProductDto): Promise<MenuProductsEntity> {
-    return this.menuProductsService.updateOne(id, body)
+  async updateOne(@Param('id') id: number, @Body() body: UpdateRestaurantMenusProductDto): Promise<RestaurantMenusProductsEntity> {
+    return this.restaurantMenusProductsService.updateOne(id, body)
   }
 
   @ApiOkResponse({
@@ -91,6 +91,6 @@ export class MenuProductsController {
   })
   @Delete(':id')
   async remove(@Param('id') id: number): Promise<void> {
-    return this.menuProductsService.remove(id)
+    return this.restaurantMenusProductsService.remove(id)
   }
 }

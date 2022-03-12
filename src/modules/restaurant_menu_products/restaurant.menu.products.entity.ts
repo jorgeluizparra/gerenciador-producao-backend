@@ -4,7 +4,7 @@ import { ProductsEntity } from '../products/products.entity';
 import { RestaurantsEntity } from '../restaurants/restaurants.entity';
 
 @Entity('menu_products')
-export class MenuProductsEntity {
+export class RestaurantMenusProductsEntity {
   @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
@@ -29,12 +29,12 @@ export class MenuProductsEntity {
   @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
   updatedAt: Date;
 
-  @ManyToOne(() => RestaurantsEntity, restaurant => restaurant.menuProducts)
+  @ManyToOne(() => RestaurantsEntity, restaurant => restaurant.restaurantMenusProducts)
   restaurant?: RestaurantsEntity;
   @Column({ nullable: false })
   restaurantId: number;
   
-  @OneToOne(() => ProductsEntity)
+  @OneToOne(() => ProductsEntity, { eager: true })
   @JoinColumn()
   product?: ProductsEntity;
   @Column({ nullable: false })

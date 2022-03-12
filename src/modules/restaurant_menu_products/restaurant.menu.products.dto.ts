@@ -1,9 +1,9 @@
 import { ApiProperty, OmitType, PartialType, PickType } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
 import { IsNotEmpty, IsNumber, IsString, Matches, Validate } from "class-validator";
-import { MenuProductsEntity } from "./menu.products.entity";
+import { RestaurantMenusProductsEntity } from "./restaurant.menu.products.entity";
 
-export class CreateMenuProductDto {
+export class CreateRestaurantMenusProductDto {
 
     @IsNumber()
     @IsNotEmpty()
@@ -22,8 +22,8 @@ export class CreateMenuProductDto {
     restaurantId: number;
 }
 
-export class UpdateMenuProductDto extends PartialType(
-    PickType(CreateMenuProductDto, [] as const),
+export class UpdateRestaurantMenusProductDto extends PartialType(
+    PickType(CreateRestaurantMenusProductDto, [] as const),
 ) {}
 
-export class FindAllMenuProductsQueryDto extends PartialType(MenuProductsEntity){}
+export class FindAllRestaurantMenusProductsQueryDto extends PartialType(RestaurantMenusProductsEntity){}

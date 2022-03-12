@@ -44,6 +44,7 @@ export class RestaurantsService {
   }
 
   async findOne(id: number, relations: string[]): Promise<RestaurantsEntity> {
+    console.log(relations);
     let restaurant = await this.restaurantsRepository.findOne(id, { relations }).catch((error) => {
       this.logger.error({
         location: '[Restaurant > findOne]',

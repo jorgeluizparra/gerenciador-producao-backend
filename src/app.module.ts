@@ -16,7 +16,7 @@ import { TypeOrmConfigService } from './database';
 import { EventsModule } from './modules/events/events.module';
 import { RestaurantsModule } from './modules/restaurants/restaurants.module';
 import { OpeningDaysModule } from './modules/opening_days/opening.days.module';
-import { MenuProductsModule } from './modules/menu_products/menu.products.module';
+import { RestaurantMenusProductsModule } from './modules/restaurant_menu_products/restaurant.menu.products.module';
 
 @Module({
   imports: [
@@ -48,7 +48,7 @@ import { MenuProductsModule } from './modules/menu_products/menu.products.module
     UsersModule,
     ClientsModule,
     CreditCardsModule,
-    MenuProductsModule
+    RestaurantMenusProductsModule
   ],
   controllers: [AppController],
   providers: [AppService],
