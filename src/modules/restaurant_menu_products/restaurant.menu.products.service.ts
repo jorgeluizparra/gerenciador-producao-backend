@@ -24,9 +24,9 @@ export class RestaurantMenusProductsService {
         HttpStatus.BAD_REQUEST
       )
     }
-    let openingDay = this.restaurantMenusProductsRepository.create(body);
-    openingDay.restaurant = await this.restaurantService.findOne(body.restaurantId, ['restaurantMenusProducts']);
-    return this.restaurantMenusProductsRepository.save(openingDay).catch((error) => {
+    let restaurantMenuProduct = this.restaurantMenusProductsRepository.create(body);
+    restaurantMenuProduct.restaurant = await this.restaurantService.findOne(body.restaurantId, ['restaurantMenusProducts']);
+    return this.restaurantMenusProductsRepository.save(restaurantMenuProduct).catch((error) => {
       this.logger.error({
         location: '[RestaurantMenusProducts > create]',
         error
@@ -52,7 +52,7 @@ export class RestaurantMenusProductsService {
   }
 
   async findOne(id: number, relations: string[]): Promise<RestaurantMenusProductsEntity> {
-    let openingDay = await this.restaurantMenusProductsRepository.findOne(id, { relations }).catch((error) => {
+    let restaurantMenuProduct = await this.restaurantMenusProductsRepository.findOne(id, { relations }).catch((error) => {
       this.logger.error({
         location: '[Menu Products > findOne]',
         error
@@ -62,14 +62,14 @@ export class RestaurantMenusProductsService {
         HttpStatus.INTERNAL_SERVER_ERROR
       )
     });
-    if (!openingDay) {
+    if (!restaurantMenuProduct) {
       this.logger.warn("Menu Product id not found")
       throw new HttpException(
         { message: "Id não encontrado" },
         HttpStatus.NOT_FOUND
       )
     }
-    return openingDay;
+    return restaurantMenuProduct;
   }
 
   async updateOne(id: number, body: UpdateRestaurantMenusProductDto): Promise<RestaurantMenusProductsEntity> {

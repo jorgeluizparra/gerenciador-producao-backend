@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { CompaniesEntity } from '../companies/companies.entity';
+import { EventMenusProductsEntity } from '../event_menu_products/event.menu.products.entity';
 
 @Entity('events')
 export class EventsEntity {
@@ -53,4 +54,6 @@ export class EventsEntity {
   @Column({ nullable: false })
   companyId: number;
 
+  @OneToMany(() => EventMenusProductsEntity, menuProduct => menuProduct.event)
+  eventMenusProducts?: EventMenusProductsEntity[];
 }

@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany, OneToOne, JoinColumn } from 'typeorm';
+import { EventsEntity } from '../events/events.entity';
 import { ProductsEntity } from '../products/products.entity';
-import { RestaurantsEntity } from '../restaurants/restaurants.entity';
 
-@Entity('restaurant_menu_products')
-export class RestaurantMenusProductsEntity {
+@Entity('event_menu_products')
+export class EventMenusProductsEntity {
   @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
@@ -29,10 +29,10 @@ export class RestaurantMenusProductsEntity {
   @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
   updatedAt: Date;
 
-  @ManyToOne(() => RestaurantsEntity, restaurant => restaurant.restaurantMenusProducts)
-  restaurant?: RestaurantsEntity;
+  @ManyToOne(() => EventsEntity, event => event.eventMenusProducts)
+  event?: EventsEntity;
   @Column({ nullable: false })
-  restaurantId: number;
+  eventId: number;
   
   @OneToOne(() => ProductsEntity, { eager: true })
   @JoinColumn()
