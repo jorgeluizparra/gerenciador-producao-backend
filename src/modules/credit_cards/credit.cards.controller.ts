@@ -55,6 +55,10 @@ export class CreditCardsController {
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
+  @ApiQuery({
+    name: 'relations',
+    required: false
+  })
   async findOne(@Param('id') id: number, @Query('relations') relations: string ): Promise<CreditCardsEntity> {
     return this.creditCardsService.findOne(id, relations ? relations.split(',') : [])
   }

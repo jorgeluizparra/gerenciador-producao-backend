@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ErrorMessageDto } from '../../utils/common.dto';
 import { CreateUserDto, FindAllUsersQueryDto } from './users.dto';
 import { UsersEntity } from './users.entity';
@@ -52,6 +52,10 @@ export class UsersController {
   @ApiInternalServerErrorResponse({
     description: 'Error consulting the database',
     type: ErrorMessageDto
+  })
+  @ApiQuery({
+    name: 'relations',
+    required: false
   })
   async findOne(@Param('id') id: number, @Query('relations') relations: string ): Promise<UsersEntity> {
     return this.usersService.findOne(id, relations ? relations.split(',') : [])

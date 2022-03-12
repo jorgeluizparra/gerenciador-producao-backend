@@ -58,7 +58,6 @@ export class MenuProductsController {
     required: false
   })
   async findOne(@Param('id') id: number, @Query('relations') relations: string ): Promise<MenuProductsEntity> {
-    relations = relations ? relations : '';
     return this.menuProductsService.findOne(id, relations ? relations.split(',') : [])
   }
 

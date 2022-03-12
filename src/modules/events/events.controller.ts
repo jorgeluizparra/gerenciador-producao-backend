@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ErrorMessageDto } from '../../utils/common.dto';
 import { CreateEventDto, FindAllEventsQueryDto, UpdateEventDto } from './events.dto';
 import { EventsEntity } from './events.entity';
@@ -52,6 +52,10 @@ export class EventsController {
   @ApiInternalServerErrorResponse({
     description: 'Error consulting the database',
     type: ErrorMessageDto
+  })
+  @ApiQuery({
+    name: 'relations',
+    required: false
   })
   async findOne(@Param('id') id: number, @Query('relations') relations: string ): Promise<EventsEntity> {
     return this.eventsService.findOne(id, relations ? relations.split(',') : [])

@@ -55,6 +55,10 @@ export class ProductCategoriesController {
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
+  @ApiQuery({
+    name: 'relations',
+    required: false
+  })
   async findOne(@Param('id') id: number, @Query('relations') relations: string ): Promise<ProductCategoriesEntity> {
     return this.productCategoriesService.findOne(id, relations ? relations.split(',') : [])
   }

@@ -53,6 +53,10 @@ export class OpeningDaysController {
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
+  @ApiQuery({
+    name: 'relations',
+    required: false
+  })
   async findOne(@Param('id') id: number, @Query('relations') relations: string ): Promise<OpeningDaysEntity> {
     return this.openingDaysService.findOne(id, relations ? relations.split(',') : [])
   }
