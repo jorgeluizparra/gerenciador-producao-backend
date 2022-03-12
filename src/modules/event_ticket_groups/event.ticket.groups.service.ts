@@ -16,6 +16,14 @@ export class EventTicketGroupsService {
   ) {}
 
   async create (body: CreateEventTicketGroupDto): Promise<EventTicketGroupsEntity> {
+    let eventMenusProducts = await this.findAll({ eventId: body.eventId, name: body.name })
+    if (eventMenusProducts.length > 0) {
+      this.logger.warn("Ticket group already exist")
+      throw new HttpException(
+        { message: `Já existe um lote com este nome.` },
+        HttpStatus.BAD_REQUEST
+      )
+    }
     let eventTicketGroup = this.eventTicketGroupsRepository.create(body);
     eventTicketGroup.event = await this.eventService.findOne(body.eventId, ['eventTicketGroups']);
     return this.eventTicketGroupsRepository.save(eventTicketGroup).catch((error) => {

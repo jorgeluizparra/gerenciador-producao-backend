@@ -11,6 +11,10 @@ export class EventTicketGroupsEntity {
 
   @ApiProperty()
   @Column({ nullable: false })
+  name: string;
+
+  @ApiProperty()
+  @Column({ nullable: false })
   price: number;
 
   @ApiProperty()

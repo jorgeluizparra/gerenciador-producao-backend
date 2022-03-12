@@ -23,7 +23,7 @@ export class CreateRestaurantMenusProductDto {
 }
 
 export class UpdateRestaurantMenusProductDto extends PartialType(
-    PickType(CreateRestaurantMenusProductDto, [] as const),
+    PickType(CreateRestaurantMenusProductDto, ['price'] as const),
 ) {}
 
 export class FindAllRestaurantMenusProductsQueryDto extends PartialType(RestaurantMenusProductsEntity){}

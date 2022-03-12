@@ -21,7 +21,7 @@ export class CreateEventMenusProductDto {
 }
 
 export class UpdateEventMenusProductDto extends PartialType(
-    PickType(CreateEventMenusProductDto, [] as const),
+    PickType(CreateEventMenusProductDto, ['price'] as const),
 ) {}
 
 export class FindAllEventMenusProductsQueryDto extends PartialType(EventMenusProductsEntity){}
