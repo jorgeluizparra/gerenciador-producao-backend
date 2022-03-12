@@ -15,9 +15,10 @@ import * as Joi from 'joi';
 import { TypeOrmConfigService } from './database';
 import { EventsModule } from './modules/events/events.module';
 import { RestaurantsModule } from './modules/restaurants/restaurants.module';
-import { OpeningDaysModule } from './modules/opening_days/opening.days.module';
+import { OpeningDaysModule } from './modules/restaurant_opening_days/opening.days.module';
 import { RestaurantMenusProductsModule } from './modules/restaurant_menu_products/restaurant.menu.products.module';
 import { EventMenusProductsModule } from './modules/event_menu_products/event.menu.products.module';
+import { TicketGroupsModule } from './modules/event_ticket_groups/ticket.groups.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { EventMenusProductsModule } from './modules/event_menu_products/event.me
     CompaniesModule,
     UsersModule,
     EventsModule,
+    TicketGroupsModule,
     EventMenusProductsModule,
     RestaurantsModule,
     RestaurantMenusProductsModule,

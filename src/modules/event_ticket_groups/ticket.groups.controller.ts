@@ -1,19 +1,19 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ErrorMessageDto } from '../../utils/common.dto';
-import { CreateEventTicketGroupDto, FindAllEventTicketGroupsQueryDto, UpdateEventTicketGroupDto } from './event.ticket.groups.dto';
-import { EventTicketGroupsEntity } from './event.ticket.groups.entity';
-import { EventTicketGroupsService } from './event.ticket.groups.service';
+import { CreateTicketGroupDto, FindAllTicketGroupsQueryDto, UpdateTicketGroupDto } from './ticket.groups.dto';
+import { TicketGroupsEntity } from './ticket.groups.entity';
+import { TicketGroupsService } from './ticket.groups.service';
 
 @ApiTags('Event Ticket Groups')
 @Controller('events/ticket-groups')
-export class EventTicketGroupsController {
-  constructor(private readonly eventTicketGroupsService: EventTicketGroupsService) {}
+export class TicketGroupsController {
+  constructor(private readonly ticketGroupsService: TicketGroupsService) {}
 
   @Post()
   @ApiCreatedResponse({
       description: 'Ticket Group created successfully',
-      type: EventTicketGroupsEntity
+      type: TicketGroupsEntity
   })
   @ApiBadRequestResponse({
     description: 'Restaurant id not found',
@@ -23,27 +23,27 @@ export class EventTicketGroupsController {
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
-  async create(@Body() body: CreateEventTicketGroupDto): Promise<EventTicketGroupsEntity> {
-    return this.eventTicketGroupsService.create(body)
+  async create(@Body() body: CreateTicketGroupDto): Promise<TicketGroupsEntity> {
+    return this.ticketGroupsService.create(body)
   }
 
   @Get()
   @ApiOkResponse({
     description: 'Return all ticket groups that match with the query',
-    type: [EventTicketGroupsEntity]
+    type: [TicketGroupsEntity]
   })
   @ApiInternalServerErrorResponse({
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
-  async findAll(@Query() query: FindAllEventTicketGroupsQueryDto): Promise<EventTicketGroupsEntity[]> {
-    return this.eventTicketGroupsService.findAll(query)
+  async findAll(@Query() query: FindAllTicketGroupsQueryDto): Promise<TicketGroupsEntity[]> {
+    return this.ticketGroupsService.findAll(query)
   }
 
   @Get(':id')
   @ApiOkResponse({
     description: 'Return the Ticket Group data',
-    type: EventTicketGroupsEntity
+    type: TicketGroupsEntity
   })
   @ApiNotFoundResponse({
     description: 'Ticket Group id not found',
@@ -57,14 +57,14 @@ export class EventTicketGroupsController {
     name: 'relations',
     required: false
   })
-  async findOne(@Param('id') id: number, @Query('relations') relations: string ): Promise<EventTicketGroupsEntity> {
-    return this.eventTicketGroupsService.findOne(id, relations ? relations.split(',') : [])
+  async findOne(@Param('id') id: number, @Query('relations') relations: string ): Promise<TicketGroupsEntity> {
+    return this.ticketGroupsService.findOne(id, relations ? relations.split(',') : [])
   }
 
   @Put(':id')
   @ApiOkResponse({
     description: 'Opening date data updated.',
-    type: EventTicketGroupsEntity
+    type: TicketGroupsEntity
   })
   @ApiNotFoundResponse({
     description: 'Not found the id.',
@@ -74,8 +74,8 @@ export class EventTicketGroupsController {
     description: 'Error consulting the database',
     type: ErrorMessageDto
   })
-  async updateOne(@Param('id') id: number, @Body() body: UpdateEventTicketGroupDto): Promise<EventTicketGroupsEntity> {
-    return this.eventTicketGroupsService.updateOne(id, body)
+  async updateOne(@Param('id') id: number, @Body() body: UpdateTicketGroupDto): Promise<TicketGroupsEntity> {
+    return this.ticketGroupsService.updateOne(id, body)
   }
 
   @ApiOkResponse({
@@ -91,6 +91,6 @@ export class EventTicketGroupsController {
   })
   @Delete(':id')
   async remove(@Param('id') id: number): Promise<void> {
-    return this.eventTicketGroupsService.remove(id)
+    return this.ticketGroupsService.remove(id)
   }
 }

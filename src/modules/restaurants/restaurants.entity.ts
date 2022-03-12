@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { CompaniesEntity } from '../companies/companies.entity';
 import { RestaurantMenusProductsEntity } from '../restaurant_menu_products/restaurant.menu.products.entity';
-import { OpeningDaysEntity } from '../opening_days/opening.days.entity';
+import { OpeningDaysEntity } from '../restaurant_opening_days/opening.days.entity';
 
 @Entity('restaurants')
 export class RestaurantsEntity {

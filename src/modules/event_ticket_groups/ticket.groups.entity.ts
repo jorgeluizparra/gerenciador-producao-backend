@@ -4,7 +4,7 @@ import { EventsEntity } from '../events/events.entity';
 import { ProductsEntity } from '../products/products.entity';
 
 @Entity('event_ticket_groups')
-export class EventTicketGroupsEntity {
+export class TicketGroupsEntity {
   @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
@@ -37,7 +37,7 @@ export class EventTicketGroupsEntity {
   @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
   updatedAt: Date;
 
-  @ManyToOne(() => EventsEntity, event => event.eventTicketGroups)
+  @ManyToOne(() => EventsEntity, event => event.ticketGroups)
   event?: EventsEntity;
   @Column({ nullable: false })
   eventId: number;

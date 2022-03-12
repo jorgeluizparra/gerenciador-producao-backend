@@ -1,8 +1,8 @@
 import { ApiProperty, OmitType, PartialType, PickType } from "@nestjs/swagger";
 import { IsNotEmpty, IsNumber, IsString } from "class-validator";
-import { EventTicketGroupsEntity } from "./event.ticket.groups.entity";
+import { TicketGroupsEntity } from "./ticket.groups.entity";
 
-export class CreateEventTicketGroupDto {
+export class CreateTicketGroupDto {
 
     @IsString()
     @IsNotEmpty()
@@ -30,8 +30,8 @@ export class CreateEventTicketGroupDto {
     eventId: number;
 }
 
-export class UpdateEventTicketGroupDto extends PartialType(
-    PickType(CreateEventTicketGroupDto, ['price', 'quantity'] as const),
+export class UpdateTicketGroupDto extends PartialType(
+    PickType(CreateTicketGroupDto, ['price', 'quantity'] as const),
 ) {}
 
-export class FindAllEventTicketGroupsQueryDto extends PartialType(EventTicketGroupsEntity){}
+export class FindAllTicketGroupsQueryDto extends PartialType(TicketGroupsEntity){}
