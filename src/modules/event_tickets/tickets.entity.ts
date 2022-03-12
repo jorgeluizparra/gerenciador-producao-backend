@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany, OneToOne, JoinColumn } from 'typeorm';
+import { ClientsEntity } from '../clients/clients.entity';
 import { EventsEntity } from '../events/events.entity';
 import { TicketGroupsEntity } from '../event_ticket_groups/ticket.groups.entity';
 import { ProductsEntity } from '../products/products.entity';
@@ -30,5 +31,11 @@ export class TicketsEntity {
   group?: TicketGroupsEntity;
   @Column({ nullable: false })
   groupId: number;
+
+  @OneToOne(() => ClientsEntity, { eager: true })
+  @JoinColumn()
+  client?: ClientsEntity;
+  @Column({ nullable: false })
+  clientId: number;
 
 }

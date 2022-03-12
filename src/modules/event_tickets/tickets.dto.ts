@@ -7,11 +7,16 @@ export class CreateTicketGroupDto {
     @IsNumber()
     @IsNotEmpty()
     @ApiProperty()
+    clientId: number;
+
+    @IsNumber()
+    @IsNotEmpty()
+    @ApiProperty()
     groupId: number;
 }
 
 export class UpdateTicketGroupDto extends PartialType(
-    PickType(CreateTicketGroupDto, [] as const),
+    PickType(CreateTicketGroupDto, ['clientId'] as const),
 ) {}
 
 export class FindAllTicketsQueryDto extends PartialType(TicketsEntity){}
