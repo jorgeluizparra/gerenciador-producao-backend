@@ -2,33 +2,33 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RestaurantsService } from '../restaurants/restaurants.service';
-import { CreateOpeningDayDto, FindAllOpeningDaysQueryDto, UpdateOpeningDayDto } from './opening.days.dto';
-import { OpeningDaysEntity } from './opening.days.entity';
+import { CreateMenuProductDto, FindAllMenuProductsQueryDto, UpdateMenuProductDto } from './menu.products.dto';
+import { MenuProductsEntity } from './menu.products.entity';
 
 @Injectable()
-export class OpeningDaysService {
-  private readonly logger = new Logger(OpeningDaysService.name);
+export class MenuProductsService {
+  private readonly logger = new Logger(MenuProductsService.name);
   
   constructor(
-    @InjectRepository(OpeningDaysEntity)
-    private openingDaysRepository: Repository<OpeningDaysEntity>,
+    @InjectRepository(MenuProductsEntity)
+    private menuProductsRepository: Repository<MenuProductsEntity>,
     private restaurantService: RestaurantsService,
   ) {}
 
-  async create (body: CreateOpeningDayDto): Promise<OpeningDaysEntity> {
-    let openingDays = await this.findAll({ restaurantId: body.restaurantId, day: body.day })
-    if (openingDays.length > 0) {
+  async create (body: CreateMenuProductDto): Promise<MenuProductsEntity> {
+    let menuProducts = await this.findAll({ restaurantId: body.restaurantId })
+    if (menuProducts.length > 0) {
       this.logger.warn("Opening hour already exist")
       throw new HttpException(
-        { message: `${body.day} já foi cadastrada(o).` },
+        { message: `Já foi cadastrada(o).` },
         HttpStatus.BAD_REQUEST
       )
     }
-    let openingDay = this.openingDaysRepository.create(body);
-    openingDay.restaurant = await this.restaurantService.findOne(body.restaurantId, ['openingDays']);
-    return this.openingDaysRepository.save(openingDay).catch((error) => {
+    let openingDay = this.menuProductsRepository.create(body);
+    openingDay.restaurant = await this.restaurantService.findOne(body.restaurantId, ['menuProducts']);
+    return this.menuProductsRepository.save(openingDay).catch((error) => {
       this.logger.error({
-        location: '[OpeningDays > create]',
+        location: '[MenuProducts > create]',
         error
       })
       throw new HttpException(
@@ -38,8 +38,8 @@ export class OpeningDaysService {
     });
   }
 
-  findAll(query: FindAllOpeningDaysQueryDto|FindAllOpeningDaysQueryDto[]): Promise<OpeningDaysEntity[]> {
-    return this.openingDaysRepository.find({ where: query}).catch((error) => {
+  findAll(query: FindAllMenuProductsQueryDto|FindAllMenuProductsQueryDto[]): Promise<MenuProductsEntity[]> {
+    return this.menuProductsRepository.find({ where: query}).catch((error) => {
       this.logger.error({
         location: '[Opening Days > findAll]',
         error
@@ -51,8 +51,8 @@ export class OpeningDaysService {
     });
   }
 
-  async findOne(id: number, relations: string[]): Promise<OpeningDaysEntity> {
-    let openingDay = await this.openingDaysRepository.findOne(id, { relations }).catch((error) => {
+  async findOne(id: number, relations: string[]): Promise<MenuProductsEntity> {
+    let openingDay = await this.menuProductsRepository.findOne(id, { relations }).catch((error) => {
       this.logger.error({
         location: '[Opening Days > findOne]',
         error
@@ -72,9 +72,9 @@ export class OpeningDaysService {
     return openingDay;
   }
 
-  async updateOne(id: number, body: UpdateOpeningDayDto): Promise<OpeningDaysEntity> {
+  async updateOne(id: number, body: UpdateMenuProductDto): Promise<MenuProductsEntity> {
     await this.findOne(id, []);
-    await this.openingDaysRepository.update({ id }, body).catch(error => {
+    await this.menuProductsRepository.update({ id }, body).catch(error => {
       this.logger.error({
         location: '[Opening Days > updateOne]',
         error
@@ -89,7 +89,7 @@ export class OpeningDaysService {
 
   async remove(id: number): Promise<void> {
     await this.findOne(id, [])
-    await this.openingDaysRepository.delete(id).catch((error) => {
+    await this.menuProductsRepository.delete(id).catch((error) => {
       this.logger.error({
         location: '[Opening Days > remove]',
         error

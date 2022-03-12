@@ -12,7 +12,7 @@ export class OpeningDaysController {
 
   @Post()
   @ApiCreatedResponse({
-      description: 'Product category created successfully',
+      description: 'Opening Day created successfully',
       type: OpeningDaysEntity
   })
   @ApiBadRequestResponse({
@@ -29,7 +29,7 @@ export class OpeningDaysController {
 
   @Get()
   @ApiOkResponse({
-    description: 'Return all product categories that match with the query',
+    description: 'Return all menus that match with the query',
     type: [OpeningDaysEntity]
   })
   @ApiInternalServerErrorResponse({
@@ -42,11 +42,11 @@ export class OpeningDaysController {
 
   @Get(':id')
   @ApiOkResponse({
-    description: 'Return the product category data',
+    description: 'Return the Opening Day data',
     type: OpeningDaysEntity
   })
   @ApiNotFoundResponse({
-    description: 'Product category id not found',
+    description: 'Opening Day id not found',
     type: ErrorMessageDto
   })
   @ApiInternalServerErrorResponse({
@@ -75,10 +75,10 @@ export class OpeningDaysController {
   }
 
   @ApiOkResponse({
-    description: 'Product category deleted successfully'
+    description: 'Opening Day deleted successfully'
   })
   @ApiNotFoundResponse({
-    description: 'Product category id not found',
+    description: 'Opening Day id not found',
     type: ErrorMessageDto
   })
   @ApiInternalServerErrorResponse({
