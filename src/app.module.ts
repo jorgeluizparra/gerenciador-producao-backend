@@ -19,6 +19,7 @@ import { OpeningDaysModule } from './modules/restaurant_opening_days/opening.day
 import { RestaurantMenusProductsModule } from './modules/restaurant_menu_products/restaurant.menu.products.module';
 import { EventMenusProductsModule } from './modules/event_menu_products/event.menu.products.module';
 import { TicketGroupsModule } from './modules/event_ticket_groups/ticket.groups.module';
+import { TicketsModule } from './modules/event_tickets/tickets.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { TicketGroupsModule } from './modules/event_ticket_groups/ticket.groups.
     UsersModule,
     EventsModule,
     TicketGroupsModule,
+    TicketsModule,
     EventMenusProductsModule,
     RestaurantsModule,
     RestaurantMenusProductsModule,

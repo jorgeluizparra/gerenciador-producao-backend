@@ -1,26 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 import { EventsEntity } from '../events/events.entity';
-import { TicketsEntity } from '../event_tickets/tickets.entity';
+import { TicketGroupsEntity } from '../event_ticket_groups/ticket.groups.entity';
 import { ProductsEntity } from '../products/products.entity';
 
-@Entity('event_ticket_groups')
-export class TicketGroupsEntity {
+@Entity('event_tickets')
+export class TicketsEntity {
   @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
-
-  @ApiProperty()
-  @Column({ nullable: false })
-  name: string;
-
-  @ApiProperty()
-  @Column({ nullable: false })
-  price: number;
-
-  @ApiProperty()
-  @Column({ nullable: false })
-  quantity: number;
 
   @ApiProperty()
   @Column({ default: false, nullable: false })
@@ -38,12 +26,9 @@ export class TicketGroupsEntity {
   @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
   updatedAt: Date;
 
-  @ManyToOne(() => EventsEntity, event => event.ticketGroups)
-  event?: EventsEntity;
+  @ManyToOne(() => TicketGroupsEntity, group => group.tickets)
+  group?: TicketGroupsEntity;
   @Column({ nullable: false })
-  eventId: number;
-
-  @OneToMany(() => TicketsEntity, ticket => ticket.group)
-  tickets?: TicketsEntity[];
+  groupId: number;
 
 }

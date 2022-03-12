@@ -5,7 +5,7 @@ import { CreateOpeningDayDto, FindAllOpeningDaysQueryDto, UpdateOpeningDayDto } 
 import { OpeningDaysEntity } from './opening.days.entity';
 import { OpeningDaysService } from './opening.days.service';
 
-@ApiTags('Opening Days')
+@ApiTags('Restaurant Opening Days')
 @Controller('opening-days')
 export class OpeningDaysController {
   constructor(private readonly openingDaysService: OpeningDaysService) {}
