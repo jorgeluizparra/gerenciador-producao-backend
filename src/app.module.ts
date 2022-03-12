@@ -15,7 +15,7 @@ import * as Joi from 'joi';
 import { TypeOrmConfigService } from './database';
 import { EventsModule } from './modules/events/events.module';
 import { RestaurantsModule } from './modules/restaurants/restaurants.module';
-import { OpeningHoursModule } from './modules/opening_hours/opening.hours.module';
+import { OpeningDaysModule } from './modules/opening_days/opening.days.module';
 
 @Module({
   imports: [
@@ -41,7 +41,7 @@ import { OpeningHoursModule } from './modules/opening_hours/opening.hours.module
     CompaniesModule,
     EventsModule,
     RestaurantsModule,
-    OpeningHoursModule,
+    OpeningDaysModule,
     ProductCategoriesModule,
     ProductsModule,
     UsersModule,

@@ -7,8 +7,8 @@ export type DaysFormat =
   |'sexta-feira'|'sabado-feira'|'domingo-feira'|'feriados'
 
 
-@Entity('opening_hours')
-export class OpeningHoursEntity {
+@Entity('opening_days')
+export class OpeningDaysEntity {
   @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
@@ -25,7 +25,7 @@ export class OpeningHoursEntity {
   @Column({ nullable: false })
   closeTime: string;
 
-  @ManyToOne(() => RestaurantsEntity, restaurant => restaurant.openingHours)
+  @ManyToOne(() => RestaurantsEntity, restaurant => restaurant.openingDays)
   restaurant?: RestaurantsEntity;
   @Column({ nullable: false })
   restaurantId: number;

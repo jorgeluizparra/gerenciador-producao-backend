@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { CompaniesEntity } from '../companies/companies.entity';
-import { OpeningHoursEntity } from '../opening_hours/opening.hours.entity';
+import { OpeningDaysEntity } from '../opening_days/opening.days.entity';
 
 @Entity('restaurants')
 export class RestaurantsEntity {
@@ -46,7 +46,7 @@ export class RestaurantsEntity {
   @Column({ nullable: false })
   companyId: number;
 
-  @OneToMany(() => OpeningHoursEntity, openingHour => openingHour.restaurant)
-  openingHours?: OpeningHoursEntity[];
+  @OneToMany(() => OpeningDaysEntity, openingDay => openingDay.restaurant)
+  openingDays?: OpeningDaysEntity[];
 
 }

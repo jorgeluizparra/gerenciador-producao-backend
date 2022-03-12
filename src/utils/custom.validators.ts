@@ -1,5 +1,5 @@
 import { ValidatorConstraint, ValidatorConstraintInterface } from "class-validator";
-import { DaysFormat } from "src/modules/opening_hours/opening.hours.entity";
+import { DaysFormat } from "src/modules/opening_days/opening.days.entity";
 import { AccessType } from "../../src/modules/users/users.entity";
 
 export const AcceptedAccountTypes: AccessType[] = ['admin', 'normal']

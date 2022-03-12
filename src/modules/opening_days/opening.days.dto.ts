@@ -1,10 +1,10 @@
-import { ApiProperty, OmitType, PartialType } from "@nestjs/swagger";
+import { ApiProperty, OmitType, PartialType, PickType } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
 import { IsNotEmpty, IsNumber, IsString, Matches, Validate } from "class-validator";
 import { DaysFormatTypes, ValidateDayFormat } from "src/utils/custom.validators";
-import { DaysFormat, OpeningHoursEntity } from "./opening.hours.entity";
+import { DaysFormat, OpeningDaysEntity } from "./opening.days.entity";
 
-export class CreateOpeningHourDto {
+export class CreateOpeningDayDto {
     
     @IsString()
     @Validate(ValidateDayFormat)
@@ -35,8 +35,8 @@ export class CreateOpeningHourDto {
     restaurantId: number;
 }
 
-export class UpdateOpeningHourDto extends PartialType(
-    OmitType(CreateOpeningHourDto, ['restaurantId'] as const),
+export class UpdateOpeningDayDto extends PartialType(
+    PickType(CreateOpeningDayDto, ['openTime', 'closeTime'] as const),
 ) {}
 
-export class FindAllOpeningHoursQueryDto extends PartialType(OpeningHoursEntity){}
+export class FindAllOpeningDaysQueryDto extends PartialType(OpeningDaysEntity){}
