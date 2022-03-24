@@ -18,7 +18,7 @@ async function bootstrap() {
   
   // API documentation
   const config = new DocumentBuilder()
-    .setTitle('Rolê! App Backend')
+    .setTitle('Gerenciador de produção - Backend')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
